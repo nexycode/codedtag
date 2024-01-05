@@ -31,7 +31,10 @@ const ObjectId = Schema.ObjectId;
 //---------------------------------------------------------------
 // Create Schema of DB 
 let usersSchema = new Schema({
-      _id: ObjectId,
+      id: {
+            type: mongoose.Schema.Types.ObjectId,
+            // default: mongoose.Types.ObjectId
+      },
       username:{
             type : String ,
             trim: true  
