@@ -71,7 +71,10 @@ let usersSchema = new Schema({
                   message: `Invalid Email`
             }
       },
-      rule: Number , /* Subscriber:0, Contributer:1, Editor:2, Author:3, Admin:4 */
+      rule: {
+            type: Number,
+            default:0
+      } , /* Subscriber:0, Contributer:1, Editor:2, Author:3, Admin:4 */
       about: { type : String , trim :true },
       social_links:{
             type: [
