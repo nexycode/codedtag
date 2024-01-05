@@ -1,0 +1,17 @@
+{
+  "name": "codedtag",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start:dev": "npm-run-all --parallel nodemon:start react:start",
+    "react:start": "npm --prefix ./client run dev-start",
+    "nodemon:start": "npm --prefix ./server run dev-start"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
