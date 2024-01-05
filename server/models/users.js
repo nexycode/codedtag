@@ -85,7 +85,8 @@ let usersSchema = new Schema({
       is_deleted: Boolean, 
       register_date:Date,
       last_log:Date,
-      application_id:  ObjectId
+      activated_account: Boolean,
+      application_id:  ObjectId,
 });
 
 // Create Collection

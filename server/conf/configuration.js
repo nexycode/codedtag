@@ -3,6 +3,7 @@
 var conf = { 
 
       server: {
+            api: "/api",
             devMode: true, 
             port: process.env.port || 5000,
             root: {
@@ -30,7 +31,7 @@ conf.server.root.dev = `${conf.server.root.dev}:${conf.server.port}/` ;
 conf.database.link = `${conf.database.host}:${conf.database.port}/${conf.database.name}` ;
 
 
-
+//console.log(conf.database.link);
 
 
 module.exports = conf;

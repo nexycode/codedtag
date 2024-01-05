@@ -1,21 +1,24 @@
 const express = require("express");
 const {mongoose} = require("./conf/connection");
 const conf = require("./conf/configuration");
+const bodyParser = require('body-parser');
 
-
-// Models
-const user = require("./models/users");
- 
-
+// Routers
+const {userRouters} = require("./api/users");
 var app = express();
 
-app.get("/api", (req, res) => {
-      res.json({
-            "project": "CodedTag",
-            "Developer": "Montasser Mossallem",
-            "type": "Community"
-      });
-});
+
+//app.use(bodyParser.json());
+//app.use(bodyParser.urlencoded({ extended: false}));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
+
+
+
+
+
+
+app.use( conf.server.api,  userRouters );
 
 
 
