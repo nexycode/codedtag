@@ -1,5 +1,5 @@
 const mongoose = require('mongoose'); 
-const express = require("express");
+const express = require("express"); 
 var userRouters = express.Router();
 var sanitizer = require('sanitizer');
 var jwt = require('jsonwebtoken');
@@ -203,10 +203,37 @@ userRouters.post("/create", verify_api_keys, async (req, res) => {
 
 });
 
-// Send Activation Link
-userRouters.post("/send-activation-link", verify_api_keys, async (req, res) => {
+// Send Activation Link - verify_api_keys,
+userRouters.post("/send-activation-link",  async (req, res) => {
     // https://www.w3schools.com/nodejs/nodejs_email.asp
-    var 
+    // https://stackoverflow.com/questions/44853483/send-email-using-nodemailer-with-godaddy-hosted-email
+
+    const sendmail = require('sendmail')({
+        logger: {
+          debug: console.log,
+          info: console.info,
+          warn: console.warn,
+          error: console.error
+        },
+        silent: false,
+        dkim: false,
+        devPort: 5000, // Default: False
+        devHost: 'localhost', // Default: localhost
+        smtpPort: 465, // Default: 25
+        smtpHost: 'smtpout.secureserver.net' // Default: -1 - extra smtp host after resolveMX
+    })
+    
+    sendmail({
+        from: 'test@codedtag.com',
+        to: 'moun2040@gmail.com.com ',
+        subject: 'test sendmail',
+        html: 'Mail of test sendmail ',
+      }, function(err, reply) {
+        console.log(err && err.stack);
+        console.dir(reply);
+    });
+    
+    
 });
 
 // Activation Proccess 
