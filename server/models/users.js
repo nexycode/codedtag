@@ -62,14 +62,7 @@ let usersSchema = new Schema({
       email: {
             type: String ,
             trim : true ,
-            required:[true , "Required !"],
-            validate: {
-                  validator: function validateEmail(email) {
-                        var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-                        return re.test(email);
-                  },
-                  message: `Invalid Email`
-            }
+            required:[true , "Required !"] 
       },
       rule: {
             type: Number,
@@ -93,6 +86,10 @@ let usersSchema = new Schema({
       last_log:Date,
       activated_account: Boolean,
       application_id:  ObjectId,
+      token: {
+            type:String,
+            default: ''
+      }
 });
 
 // Create Collection
