@@ -1,0 +1,172 @@
+
+// Custom Default Headlines 
+h1, h2, h3, h4, h5, h6, p {
+    padding: 0;
+    margin: 0;
+}
+
+
+.h1, h1 { // 35px => 2.1875
+    font-size: 2.1875rem;
+    line-height: 2.99rem;
+   
+}
+
+.h2, h2 { // 30px => 1.875
+    font-size: 1.875rem;
+    line-height: 2.45rem;
+    @include breakpoint-down(md) {
+        font-size: 1.25rem;
+        line-height: 1.85rem;
+    }
+}
+
+
+.h3, h3 { // 27px => 1.6875
+    font-size: 1.6875rem;
+    line-height: 2.3rem;
+    @include breakpoint-down(md) {
+        font-size: 1.17rem;
+        line-height: 1.75rem;
+    }
+}
+
+.h4, h4 { // 23px => 1.4375
+    font-size: 1.43rem;
+    line-height: 2.3rem;
+    @include breakpoint-down(md) {
+        font-size: 1.1rem;
+        line-height: 1.45rem;
+    }
+}
+
+.h5, h5 { // 20px => 1.25
+    font-size: 1.25rem;
+    line-height: 1.8rem;
+    @include breakpoint-down(md) {
+        font-size: 1.1rem;
+        line-height: 1.45rem;
+    }
+}
+
+.h6, h6 {  // 18px => 1.15
+    font-size: 1.125rem;
+    line-height: 1.55;
+    @include breakpoint-down(md) {
+        font-size: 1rem;
+    }
+}
+
+.md-title {  // 16px => 1
+    font-size: 1rem;
+    line-height: 1.55; 
+}
+
+.sm-title {  // 15px => 1
+    font-size: .9375rem;
+    line-height: 1.55; 
+}
+
+.xs-title {  // 14px => 1.15
+    font-size: 0.875rem;
+    line-height: 1.55; 
+}
+
+.mini-title {  // 13px => 1.15
+    font-size: 0.8125rem;
+    line-height: 1.55; 
+}
+
+
+
+
+/* Other Texts and Typo */
+dfn, em, cite, i, code, kbd, tt, var {
+    font-size: 1em;
+}
+
+abbr, acronym {
+    cursor: help
+}
+
+big {
+    font-size: 125%;
+}
+
+pre {
+
+    max-width: 100%;
+    word-wrap: break-word;
+    font-size: 0.929em;
+    @include white-space;
+    overflow: auto;
+}
+
+
+.smooth, .smooth li a {
+    @include font-smooth;
+}
+
+
+
+
+
+
+// Typography List 
+.font-10, .font-10 > li > a {
+    font-size: 10px;
+}
+
+.font-11, .font-11 > li > a {
+    font-size: 11px;
+}
+
+.font-12, .font-12 > li > a {
+    font-size: 12px;
+}
+
+.font-13, .font-13 > li > a {
+    font-size: 13px;
+}
+
+.font-14, .font-14 > li > a {
+    font-size: 14px;
+}
+
+.font-15, .font-15 > li > a {
+    font-size: 15px;
+}
+
+.font-16, .font-16 > li > a {
+    font-size: 16px;
+}
+
+
+
+
+// Boldest and uppercase 
+.no-bold, .no-bold-list > li > a {
+    font-weight: normal;
+}
+
+.mini-bold, .mini-bold-list > li > a {
+    font-weight: 300;
+}
+
+.bold, .bold-list > li > a {
+    font-weight: 500;
+}
+
+.semi-bold, .semi-bold-list > li > a {
+    font-weight: 700;
+}
+
+.black, .black-list > li > a {
+    font-weight: 900;
+}
+
+.uppercase, .uppercase-list > li > a {
+    text-transform: uppercase;
+}
+
+

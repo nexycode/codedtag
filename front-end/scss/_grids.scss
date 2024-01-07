@@ -1,0 +1,65 @@
+// Row
+.row {
+    
+    @include flex-display;
+    @include flex-wrap(wrap);
+    
+    & > * {
+        @include flex-shrink(0);
+        width: 100%;
+        max-width: 100%;
+    }
+
+}
+
+// Columns 
+@each $screen-name, $screen-width in $screens {
+
+    @include breakpoint-up( $screen-name ){ 
+
+        @for $i from 1 through $grid-counts {
+
+            .#{$screen-name}-#{$i} {
+                flex: 0 0 auto;
+                width: 100%;
+                max-width:calc(100%*$i/$grid-counts);
+            }
+
+            .order-#{$screen-name}-#{$i} {
+                order: $i;
+            }
+
+        }
+
+    }
+
+}
+
+
+// Flex with 5 Grids
+.flex-5 {
+
+    @include flex-basis(100%);
+    width: calc(100%);
+    
+    @include breakpoint-up( sm ){ 
+        
+        @include flex-basis( calc( 100% / 2 ) );
+        width: calc(100% / 2);
+        
+    }
+
+    @include breakpoint-up( md ){ 
+        
+        @include flex-basis( calc( 100% / 3 ) );
+        width: calc(100% / 3);
+        
+    }
+
+    @include breakpoint-up( lg ){ 
+        
+        @include flex-basis( calc( 100% / 5 ) );
+        width: calc(100% / 5);
+        
+    }
+}

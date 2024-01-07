@@ -4,6 +4,7 @@ var userRouters = express.Router();
 var sanitizer = require('sanitizer');
 var jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
+const request = require('request');
 
 const nodemailer = require('nodemailer');
 
@@ -121,7 +122,7 @@ userRouters.post("/create", verify_api_keys, async (req, res) => {
     }
 
     // Validate Email
-    var validate = validateEmail(useremail);
+    var validate = validateEmail(useremail); 
     if( !validate ) {
         objx.is_error = true; 
         objx.success = false; 
@@ -191,45 +192,32 @@ userRouters.post("/create", verify_api_keys, async (req, res) => {
 
     // Generate an Activation Token 
     
-    var usr = await User.updateOne({
-        _id: usrx._id,
-        token: token
-    })
+    var usr = await User.updateOne({ _id: usrx._id, },{ token: token});
     
-    if( usr.modifiedCount ) {
-        objx.is_error = false;
-        objx.data = "registration has been successfully completed !";
-        objx.user_id = usrx._id;
-        objx.success = true;
+    if( usr.modifiedCount ) { 
+
+        // attach token 
+        usrx.token = token;
+        sendActivationCode(usrx, function(obj){
+            if ( ! obj.status_code) {
+                objx.data = obj.data;
+                return res.send(objx);
+            } else {
+                objx.data = obj.data;
+                return res.send(objx);
+            }
+        });
+
     }
     
-    res.send(objx); 
+    
 
 });
 
-// Send Activation Link - verify_api_keys,
-userRouters.post("/send-activation-link",  async (req, res) => {
-    // https://www.w3schools.com/nodejs/nodejs_email.asp
-    // https://stackoverflow.com/questions/44853483/send-email-using-nodemailer-with-godaddy-hosted-email
-    
-    var objx = {
-        is_error: true,
-        data: "Something Went Wrong!",
-        success: false
-    } 
 
-    // required id 
-    if(!req.body.user_id) {
-        objx.data = "User id is required!";
-        return res.send(objx);
-    }
+// Function of Send Activation Code 
+var sendActivationCode = async (user, callback) => {
 
-    let user = await User.findOne({_id: req.body.user_id});
-
-    if( user === null || user.token == '' || user.token == undefined ) {
-        objx.data = "An error occurred during registration; please try again later";
-        return res.send(objx);
-    }
     const transporter = nodemailer.createTransport(conf.email.settings);
 
     var link = conf.email.confirm_email.confirmation_link.replace("[USER-TOKEN]", user.token);
@@ -283,17 +271,123 @@ userRouters.post("/send-activation-link",  async (req, res) => {
         subject: "Confirm Your Email",
         //text: 'Please confirm your email',
         html:body
-    };
+    }; 
+    
+    transporter.sendMail(message, async function( error, info ){
+        if (error) {
+            return callback({
+                data: "Access to SMTP server denied!",
+                status_code: 0
+            }); 
+        } else { 
+            return callback({
+                data: "We've sent the activation link to your email. Kindly confirm your email to proceed.",
+                status_code: 1
+            });  
+        }
+    }); 
+}
 
-    var action = await transporter.sendMail(message);
-    res.send(action);
+// Send Activation Link - verify_api_keys,
+userRouters.post("/send-activation-link",verify_api_keys, async (req, res) => {
+    // https://www.w3schools.com/nodejs/nodejs_email.asp
+    // https://stackoverflow.com/questions/44853483/send-email-using-nodemailer-with-godaddy-hosted-email
+    
+    var objx = {
+        is_error: true,
+        data: "Something Went Wrong!",
+        success: false
+    } 
 
+    // required id 
+    if(!req.body.email) {
+        objx.data = "email is required!";
+        return res.send(objx);
+    }
+
+    let user = await User.findOne({email: req.body.email});
+
+    if( user === null || user.token == '' || user.token == undefined ) {
+        objx.data = "We couldn't find your email. Please try signing up again.";
+        return res.send(objx);
+    }
+ 
+     
+    sendActivationCode(user, function(obj){
+        if ( ! obj.status_code) {
+            objx.data = obj.data;
+            return res.send(objx);
+        } else {
+            objx.data = obj.data;
+            return res.send(objx);
+        }
+    });
     
 });
 
+
 // Activation Proccess 
+userRouters.post("/verify-activation-link", verify_api_keys, async(req, res) => {
+    
+    var objx = {
+        is_error: true,
+        data: "Something Went Wrong!",
+        success: false
+    } 
+
+    var code = req.body.code;
+    if( code == undefined ) {
+        objx.data = "Code field is required !";
+        return res.send(objx);
+    }
+    
+    var decoded = jwt.verify(code,'user-token-159752')
+    if( decoded.token !== undefined ) {
+        
+        var user_id =  decoded.token.split("-")[0];
+        var usr = await User.findById(user_id);
+        if( usr !== null ) {
+
+            if( usr.activated_account ) {
+                objx.data= "Your account has already been activated.";
+                return res.send(objx);
+            }
+
+            var isModified = await User.updateOne({_id:user_id},{
+                activated_account: true
+            });
+
+            if(isModified.modifiedCount != undefined && isModified.modifiedCount > 0 ) {
+                objx.is_error= false,
+                objx.data= "Your account has been activated.",
+                objx.success= true;
+            }
+
+            return res.send(isModified);
+        }
+         
+
+    }
+    return res.send(isModified);
+    
+
+     
+});
 
 // Login 
+userRouters.post("/login", async(req, res) => {
+    
+    var objx = {
+        is_error: true,
+        data: "Something Went Wrong!",
+        success: false
+    };
+
+    return res.send(objx);
+
+    console.log("Login api is under building");
+    
+});
 
 // Update user
 

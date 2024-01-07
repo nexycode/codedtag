@@ -1,0 +1,64 @@
+
+// Container
+.wrapper {
+    width: 100%; 
+    margin-right: auto;
+    margin-left: auto;
+    position: relative; 
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.container {
+    display: block;
+    width: 100%;
+    //overflow: hidden;
+    position: relative;
+}
+
+.#{$prefix}x300 {
+    max-width: 300px;
+}
+
+.max-1170 {
+    max-width: 1170px;
+}
+
+.max-960 {
+    max-width: 960px;
+}
+
+.max-850 {
+    max-width: 850px;
+}
+
+.max-1150 {
+    max-width: 1150px;
+}
+
+.max-90-percent {
+    max-width: 90%;
+}
+
+
+.plr-0 {
+    padding-left: 0;
+    padding-right: 0;
+}
+.ptb-15 {
+    padding-top:15px;
+    padding-bottom:15px;
+}
+.p-all-15 {
+    padding:15px;
+}
+
+.ptb-25 {
+    padding-top: 25px;
+    padding-bottom: 25px;
+}
+.mlr--15 {
+    margin-left: -15px;
+    margin-right: -15px;
+}
+

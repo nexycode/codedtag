@@ -1,0 +1,18 @@
+// => Development option ( Template Slug )
+$prefix: 'nexy-';
+
+// Screens and Gutters 
+$screens: ( sm 576px 36, md 768px 48, lg 992px 32, xl 1200px 32, xxl 1400px 60 );
+$grid-counts:12;
+
+// Gutters 
+$gutters: ( 1 0.25, 2 0.50, 3 1, 4 1.5, 5 2, 6 2.5, 7 5, 8 6, 9 8, 10 10, 11 12.5 ); 
+
+// Radius 
+$radius: (5 5px,10 10px,15 15px,20 20px,25 25px,30 30px, half 50%);
+
+// Breakpoint of Mobile 
+$breakpoint-size: 900px;
+
+// Animated Sidebar Width
+$aside-width: 225px; 

@@ -1,0 +1,67 @@
+var Header = () => {
+
+    return ( 
+        <header class="wrapper white-bg border-bottom plr-0">
+            <nav class="flexbox items-center offset-left offset-right plr-15 max-1150">
+                <a class="site-logo" href="#">
+                    <img src="assets/img/logo-3.png" alt="Logo Site" width="135" height="36" />
+                </a>
+                <ul class="inline-list left-p-30 main-nav">
+                    <li> 
+                        <a href="#">Home </a>
+                    </li>
+                    <li class="has-subitem">
+                        <a href="#">Tutorials </a>
+                        <ul class="subitem">
+                            <li>
+                                <a href="#">Pages</a>
+                            </li>
+                            <li>
+                                <a href="#">Blocks</a>
+                            </li>
+                            <li>
+                                <a href="#">Headers</a>
+                            </li>
+                            <li>
+                                <a href="#">Footers</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li> 
+                        <a href="#">Contact </a>
+                    </li>
+                    <li> 
+                        <a href="#">About </a>
+                    </li>
+                </ul>
+                <ul class="inline-list left-p-30 offset-right mlr--15">
+                    <li> 
+                        <a class="btn third-btn radius-5 custom-header-btn" href="#">Sign up </a>
+                    </li>
+                    <li>
+                        <a class="flexbox" href="#">
+                            <span class="flexbox">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                    <circle class='stroke-color' cx="12" cy="10" r="3" stroke="#222222" stroke-linecap="round"/>
+                                    <circle class='stroke-color' cx="12" cy="12" r="9" stroke="#222222"/>
+                                    <path class='stroke-color' d="M18 18.7059C17.6461 17.6427 16.8662 16.7033 15.7814 16.0332C14.6966 15.3632 13.3674 15 12 15C10.6326 15 9.30341 15.3632 8.21858 16.0332C7.13375 16.7033 6.35391 17.6427 6 18.7059" stroke="#222222" stroke-linecap="round"/>
+                                </svg>
+                            </span>
+                        </a>
+                    </li>
+                    <li> 
+                        <a class="nav-toggler aside-toggler remove-anchor-paddings" href="#" data-sidebar-id="#aside-wrapper">
+                            <span></span>
+                            <span></span>
+                            <span></span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+        </header>
+    );
+
+}
+
+
+export default Header;
