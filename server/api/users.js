@@ -5,8 +5,13 @@ var sanitizer = require('sanitizer');
 var jwt = require('jsonwebtoken');
 const bcrypt = require('bcrypt');
 
+const nodemailer = require('nodemailer');
+
 // Models of DB 
 const {User, Application} = require("./../models/users");
+
+// configuration 
+const conf = require('./../conf/configuration');
 
 // Tokens and Api Keys
 const { verify_api_keys } = require("./../auth/application_tokens.js");
@@ -19,8 +24,7 @@ const validateEmail = (email) => {
   
 // Subscribe
 userRouters.post("/subscribe", verify_api_keys, async (req, res) => {
-    
-    console.log("Middleware completed !")
+     
     /* name - email - username */
 
     var objx = {
@@ -207,32 +211,83 @@ userRouters.post("/create", verify_api_keys, async (req, res) => {
 userRouters.post("/send-activation-link",  async (req, res) => {
     // https://www.w3schools.com/nodejs/nodejs_email.asp
     // https://stackoverflow.com/questions/44853483/send-email-using-nodemailer-with-godaddy-hosted-email
+    
+    var objx = {
+        is_error: true,
+        data: "Something Went Wrong!",
+        success: false
+    } 
 
-    const sendmail = require('sendmail')({
-        logger: {
-          debug: console.log,
-          info: console.info,
-          warn: console.warn,
-          error: console.error
-        },
-        silent: false,
-        dkim: false,
-        devPort: 5000, // Default: False
-        devHost: 'localhost', // Default: localhost
-        smtpPort: 465, // Default: 25
-        smtpHost: 'smtpout.secureserver.net' // Default: -1 - extra smtp host after resolveMX
-    })
+    // required id 
+    if(!req.body.user_id) {
+        objx.data = "User id is required!";
+        return res.send(objx);
+    }
+
+    let user = await User.findOne({_id: req.body.user_id});
+
+    if( user === null || user.token == '' || user.token == undefined ) {
+        objx.data = "An error occurred during registration; please try again later";
+        return res.send(objx);
+    }
+    const transporter = nodemailer.createTransport(conf.email.settings);
+
+    var link = conf.email.confirm_email.confirmation_link.replace("[USER-TOKEN]", user.token);
     
-    sendmail({
-        from: 'test@codedtag.com',
-        to: 'moun2040@gmail.com.com ',
-        subject: 'test sendmail',
-        html: 'Mail of test sendmail ',
-      }, function(err, reply) {
-        console.log(err && err.stack);
-        console.dir(reply);
-    });
-    
+    var h1Style = `color: #241c15;
+    font-family: Georgia,Times,'Times New Roman',serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 42px;
+    letter-spacing: normal;
+    margin: 0;
+    padding: 0;
+    text-align: center;`;
+    var pstyle =`color: #6a655f;
+    font-family: 'Helvetica Neue',Helvetica,Arial,Verdana,sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 42px;
+    letter-spacing: normal;
+    margin: 0;
+    padding: 0;
+    text-align: center;`;
+
+    var pStyles = `color: #6a655f;
+    font-family: 'Helvetica Neue',Helvetica,Arial,Verdana,sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 42px;
+    letter-spacing: normal;
+    margin: 0;
+    padding: 0;
+    text-align: center;`;
+    var aStyle = `color: white;
+    background: #222;
+    border-radius: 10px;
+    padding: 7px 40px;
+    font-weight: bold;
+    margin: 0px 0;
+    display: inline-block;
+    text-decoration: none; 
+    white-space: nowrap;`;
+
+    var body = "<h1 style='"+h1Style+"'>Please activate your CodedTag account</h1><p style='"+pStyles+"'>Hello "+user.email+"</p><p style='"+pStyles+"'>Thank you for signing up with CodedTag™!</p><p style='"+pStyles+"'>You will activate your account and start to be an author by clicking the button below.</p><a style='"+aStyle+"' href='"+link+"'>Activate Account</a><p style='"+pStyles+"'>Is the button not working? Please copy the following link and paste it into your browser:</p><p style='color:blue;'>"+link+"</p>";
+
+    var message = {
+        from: conf.email.confirm_email.sender,
+        to: user.email,
+        subject: "Confirm Your Email",
+        //text: 'Please confirm your email',
+        html:body
+    };
+
+    var action = await transporter.sendMail(message);
+    res.send(action);
+
     
 });
 

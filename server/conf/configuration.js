@@ -19,10 +19,27 @@ var conf = {
             port: process.env.port || 5000,
             root: {
                   dev: `http://localhost`, 
-                  ip: ""
+                  ip: "https://codedtag.com"
             } 
       }, 
       
+      email: {
+
+            settings: {
+                  service: 'gmail',
+                  auth: {
+                    user: 'moun2030@gmail.com',
+                    pass: 'xufikrbklofqvrkb'
+                  }
+            },
+            
+            
+            confirm_email: { 
+                  sender: "moun2030@gmail.com",
+                  // change this part only = https://example.com/activation-link
+                  confirmation_link: "https://example.com/activation-link?code=[USER-TOKEN]"
+            }
+      },
 
       database: {
             link: '',
