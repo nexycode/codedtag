@@ -3,8 +3,7 @@ const express = require("express");
 var userRouters = express.Router();
 var sanitizer = require('sanitizer');
 var jwt = require('jsonwebtoken');
-const bcrypt = require('bcrypt');
-const request = require('request');
+const bcrypt = require('bcrypt'); 
 
 const nodemailer = require('nodemailer');
 

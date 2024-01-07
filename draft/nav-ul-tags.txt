@@ -1,12 +1,4 @@
-var Header = () => {
-
-    return ( 
-        <header class="wrapper white-bg border-bottom plr-0">
-            <nav class="flexbox items-center offset-left offset-right plr-15 max-1150">
-                <a class="site-logo" href="#">
-                    <img src="assets/img/logo-3.png" alt="Logo Site" width="135" height="36" />
-                </a>
-                <ul class="inline-list left-p-30 main-nav">
+				<ul class="inline-list left-p-30 main-nav">
                     <li> 
                         <a href="#">Home </a>
                     </li>
@@ -34,6 +26,7 @@ var Header = () => {
                         <a href="#">About </a>
                     </li>
                 </ul>
+
                 <ul class="inline-list left-p-30 offset-right mlr--15">
                     <li> 
                         <a class="btn third-btn radius-5 custom-header-btn" href="#">Sign up </a>
@@ -57,11 +50,3 @@ var Header = () => {
                         </a>
                     </li>
                 </ul>
-            </nav>
-        </header>
-    );
-
-}
-
-
-export default Header;

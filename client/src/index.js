@@ -6,9 +6,9 @@ import React from 'react';
 import ReactDom from 'react-dom/client';
 
 // Tempalte Parts 
-import Header from './components/header';
-import Footer from './components/footer';
-import AnimatedSidebar from './components/animated-sidebar'
+import Header from './incs/header';
+import Footer from './incs/footer';
+import AnimatedSidebar from './incs/animated-sidebar'
 
 
 
