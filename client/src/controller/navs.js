@@ -46,7 +46,7 @@ var Navs = (props) => {
             classes = classes.trim(); 
 
 
-            // Start nav Items 
+            // Start nav Items  { ++++++++++++++++++++++Consider NAV NAME ALSO +++++++++++++++++++++++++++++}
             var items = [ // use <Link to=... +/> tag
                   {
                         type: 'item', 
