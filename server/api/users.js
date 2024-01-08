@@ -23,7 +23,7 @@ const validateEmail = (email) => {
 }
   
 // Subscribe
-userRouters.post("/subscribe", verify_api_keys, async (req, res) => {
+userRouters.post("/user/subscribe", verify_api_keys, async (req, res) => {
      
     /* name - email - username */
 
@@ -98,7 +98,7 @@ userRouters.post("/subscribe", verify_api_keys, async (req, res) => {
 });
 
 // Add new User
-userRouters.post("/create", verify_api_keys, async (req, res) => {
+userRouters.post("/user/add", verify_api_keys, async (req, res) => {
 
     var objx = {
         is_error: true,
@@ -288,7 +288,7 @@ var sendActivationCode = async (user, callback) => {
 }
 
 // Send Activation Link - verify_api_keys,
-userRouters.post("/send-activation-link",verify_api_keys, async (req, res) => {
+userRouters.post("/user/send-activation-link",verify_api_keys, async (req, res) => {
     // https://www.w3schools.com/nodejs/nodejs_email.asp
     // https://stackoverflow.com/questions/44853483/send-email-using-nodemailer-with-godaddy-hosted-email
     
@@ -326,7 +326,7 @@ userRouters.post("/send-activation-link",verify_api_keys, async (req, res) => {
 
 
 // Activation Proccess 
-userRouters.post("/verify-activation-link", verify_api_keys, async(req, res) => {
+userRouters.post("/user/verify-activation-link", verify_api_keys, async(req, res) => {
     
     var objx = {
         is_error: true,
@@ -374,7 +374,7 @@ userRouters.post("/verify-activation-link", verify_api_keys, async(req, res) => 
 });
 
 // Login 
-userRouters.post("/login", async(req, res) => {
+userRouters.post("/user/login", async(req, res) => {
     
     var objx = {
         is_error: true,

@@ -66,6 +66,10 @@ input:not([type='checkbox'], [type='radio'], [type='button'], [type='range'], [t
         padding: 10px;
         width: 100%;
     }
+    
+    &.full-wide-btn {
+        width: 100% !important;
+    }
 
     &.md {
         padding: 10px 20px;
@@ -438,6 +442,30 @@ select, textarea {
    // margin: 5px;
 }
 
+
+.response {
+    border-width: 1px; 
+    border-style:solid;  
+    padding: 15px;
+    display: none;
+    margin-bottom: 20px;
+    font-weight: 500;
+    font-size: 13px;
+    border-radius: 7px;
+
+    &.error {
+        border-color: red;
+        color: red;
+        background: #ff00000a;
+    }
+
+    &.success {
+        border-color: rgb(0, 105, 79);
+        color: rgb(0, 105, 79);
+        background: #00694f12;
+    }
+
+}
 
 
 .btn {

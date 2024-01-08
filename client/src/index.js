@@ -10,16 +10,12 @@ import Header from './incs/header';
 import Footer from './incs/footer';
 import AnimatedSidebar from './incs/animated-sidebar'
 
-// Pages 
+// Components 
+import {Register} from './components/register.js'; 
 
 
-let Home = () => {
-      return (
-            <h1>
-                  Hello World !!
-            </h1>
-      );
-}
+
+
 let Component = ({element}) => {
       return element();
 }
@@ -30,7 +26,7 @@ let Components = () => {
             <React.StrictMode>
                   <Header />
                   <AnimatedSidebar /> 
-                        <Component element={Home} />
+                        <Component element={Register} />
                   <Footer />
             </React.StrictMode>
             </>

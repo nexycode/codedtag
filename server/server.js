@@ -5,7 +5,7 @@ const bodyParser = require('body-parser');
 
 // Routers
 const {userRouters} = require("./api/users");
-const {MenuRouters} = require("./api/menus");
+const {menuRouters} = require("./api/menus");
 const {keyRouters} = require("./api/tokens");
 
 var app = express();
@@ -16,11 +16,8 @@ app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
 
-
-
-
 app.use( conf.server.api, keyRouters );
-app.use( conf.server.api, MenuRouters );
+app.use( conf.server.api, menuRouters );
 app.use( conf.server.api,  userRouters );
 
 
