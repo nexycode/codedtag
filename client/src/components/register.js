@@ -1,4 +1,4 @@
-import React, {createRef} from "react";
+import React, {useState, useRef} from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import siteKey from './../options/captcha';
 
@@ -18,16 +18,56 @@ import siteKey from './../options/captcha';
 
 let Register = () => {
     
-    const capchaOnRef = React.createRef();
+    var [capcha, setCaptch ] = useState(null);
+    var [username, setUsername ] = useState(null);
+    var [fullname, setFullName ] = useState(null);
+    var [email, setEmail ] = useState(null);
+    var [password, setPassword ] = useState(null);
+    var [confirmPassword, setConfirmPassword ] = useState(null); 
+    
+    var user_name = useRef(); 
+    var full_name = useRef(); 
+    var user_email = useRef(); 
+    var user_password = useRef(); 
+    var user_confirm_password = useRef();
+    var buttonSubmit = useRef();
 
-    var capchaOnChange = function(value) { 
+    var result = useRef();
+
+    var changedCapcha = (value) => {
+        result.current.innerHTML = "";
+        result.current.classList.remove("show");
+        setCaptch(value);
+    }
+    
+    // Loading in button and pause btn loading 
+    const inProgressBtn = () => {
         
+    }
+    const stopBtnProgress = () => {
+        buttonSubmit.current.html("Register");
     }
 
     const onSubmit = (e) => {
-        e.preventDefault();
-        const recaptchaValue = capchaOnRef.current.getValue();
-        console.log(recaptchaValue);
+        
+        e.preventDefault(); 
+
+
+        result.current.innerHTML = "";
+        result.current.classList.remove("show");
+
+        // Check Capcha
+        if(capcha == null ) {
+            result.current.classList.add("error");
+            result.current.classList.add("show");
+            result.current.innerHTML = "captcha is required";
+            return;
+        }
+        
+        // Email Validation 
+
+
+       
     }
       
     return (
@@ -37,29 +77,27 @@ let Register = () => {
             </h1> 
             <p>Come join us today and be part of making CodedTag.com even better for the future.</p>
             
-            <input type="text" placeholder="Username" name="username" />
-            <input type="text" placeholder="Your Full Name" name="username" />
-            <input type="text" placeholder="You Email" name="username" />
-            <input type="text" placeholder="Password" name="username" />
-            <input type="text" placeholder="Confirm Password" name="username" />
-
-            
+            <input type="text" ref={user_name} onChange={(e) => setUsername(e.target.value)} placeholder="Username" name="username" />
+            <input type="text" ref={full_name} onChange={(e) => setFullName(e.target.value)} placeholder="Your Full Name" name="userfullname" />
+            <input type="text" ref={user_email} onChange={(e) => setEmail(e.target.value)} placeholder="You Email" name="useremail" />
+            <input type="text" ref={user_password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" name="userpassword" />
+            <input type="text" ref={user_confirm_password} onChange={(e) => setConfirmPassword(e.target.value)} placeholder="Confirm Password" name="userconfirmpasswor" />
+ 
 
             <div className="flexbox items-center flex-wrap mb-20 gap-20">
                 <ReCAPTCHA
                     sitekey={siteKey.public}
-                    onChange={capchaOnChange}
-                    ref={capchaOnRef}
+                    onChange={changedCapcha} 
                 />
             </div>
 
             <p>
             Or do you have an account? Login
             </p>
-            <div className="response error">
-            Error in capcha please confirm that you are not a robot Error in capcha please confirm that you are not a robot
-            </div>
-            <button type="submit" className='btn third-btn radius-5 custom-header-btn offset-left full-wide-btn xl'>
+             
+            <div className="response" ref={result}></div>
+
+            <button ref={buttonSubmit} type="submit" className='btn third-btn radius-5 custom-header-btn offset-left full-wide-btn xl'>
                 Register
             </button>
           </form>
