@@ -10,32 +10,27 @@ import Header from './incs/header';
 import Footer from './incs/footer';
 import AnimatedSidebar from './incs/animated-sidebar'
 
-// Pages
-import Home from './components/Home';
+// Pages 
 
 
-let Component = (prop) => {
+let Home = () => {
       return (
-            <div>
-                  {prop.elem}
-            </div>
+            <h1>
+                  Hello World !!
+            </h1>
       );
 }
+let Component = ({element}) => {
+      return element();
+}
 
-let Components = () => {
-      {
-            var Page = [{
-                  home: Home
-            }];
-      }
+let Components = () => { 
       return (
             <>
             <React.StrictMode>
                   <Header />
-                  <AnimatedSidebar />
-                  
-                  <Component elem={Page[0].home} />
-                  
+                  <AnimatedSidebar /> 
+                        <Component element={Home} />
                   <Footer />
             </React.StrictMode>
             </>
