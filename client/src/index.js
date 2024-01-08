@@ -10,20 +10,31 @@ import Header from './incs/header';
 import Footer from './incs/footer';
 import AnimatedSidebar from './incs/animated-sidebar'
 
+// Pages
+import Home from './components/Home';
 
 
-
+let Component = (prop) => {
+      return (
+            <div>
+                  {prop.elem}
+            </div>
+      );
+}
 
 let Components = () => {
+      {
+            var Page = [{
+                  home: Home
+            }];
+      }
       return (
             <>
             <React.StrictMode>
                   <Header />
                   <AnimatedSidebar />
                   
-                  <h1>
-                        Hello CodedTag Readers ...
-                  </h1>
+                  <Component elem={Page[0].home} />
                   
                   <Footer />
             </React.StrictMode>
