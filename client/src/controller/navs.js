@@ -47,6 +47,11 @@ var Navs = (props) => {
 
 
             // Start nav Items  { ++++++++++++++++++++++Consider NAV NAME ALSO +++++++++++++++++++++++++++++}
+            /* 
+                  id 
+                  name 
+                  items []
+            */
             var items = [ // use <Link to=... +/> tag
                   {
                         type: 'item', 
@@ -56,8 +61,8 @@ var Navs = (props) => {
                         svg: '',    
                         router: false,
                         path: '',    
-                        component: '',     // page - tutorial - 
-                        subitem: [
+                        component: 'home',     // page - tutorial - 
+                        subitem: [ // default => empty []
                               {
                                     type: 'item', 
                                     link: '#',
