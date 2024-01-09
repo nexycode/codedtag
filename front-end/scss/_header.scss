@@ -55,7 +55,7 @@ header.sticky {
 .block-list,
 .slideitem {
     @include flex-direction(column);
-    @include align-items(start);
+    @include align-items(flex-start);
     list-style: none;
     padding: 0;
     width: 100%;

@@ -1,10 +1,9 @@
 import React, {useState, useRef, useContext} from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import siteKey from './../options/captcha';
-import {validateEmail} from './../utils/email';
-import {apiKeys} from './../utils/api-keys';
+import {validateEmail} from './../utils/email'; 
 
-
+import axios from 'axios'; 
 import {ApiKeysContext} from './../utils/api-keys';
 
 /*
@@ -26,7 +25,7 @@ let Register = () => {
 
     // Getting Key and secret key 
     var keys = useContext(ApiKeysContext);
-    console.log(keys);
+    
     
     // Getting fields values 
     var [capcha, setCaptch ] = useState(null);
@@ -45,6 +44,12 @@ let Register = () => {
     var buttonSubmit = useRef();
 
     var result = useRef();
+    var inProgressRequest = false;
+
+    var truncateError = () => {
+        result.current.innerHTML = "";
+        result.current.classList.remove("show");
+    }
 
     var changedCapcha = (value) => {
         result.current.innerHTML = "";
@@ -71,17 +76,24 @@ let Register = () => {
 
     // Loading in button and pause btn loading 
     const inProgressBtn = () => {
-        
+        inProgressRequest = true;
+        buttonSubmit.current.innerHTML='<span class="loader"></span>';
     }
 
     const stopBtnProgress = () => {
+        inProgressRequest = false;
         buttonSubmit.current.innerHTML="Register";
     }
 
     const onSubmit = (e) => {
         
         e.preventDefault(); 
-        inProgressBtn();
+
+        if( inProgressRequest ) { 
+            return;
+        }
+
+        inProgressBtn(); 
 
         result.current.innerHTML = "";
         result.current.classList.remove("show");
@@ -125,15 +137,56 @@ let Register = () => {
             return;
         }
 
+        
+
         // connect to server 
         var data = {
-            password,
-            confirmPassword,
-            username,
-            email,
-            fullname
+            password: password, 
+            username:username,
+            email: email,
+            full_name: fullname,
+            capcha: capcha
         }
-       
+
+        data["Secret-codedtag-api-key"] = keys.secret;
+        
+        // keys.public;
+        // keys.secret;
+
+        var request = axios({
+            method: 'post',
+            url: '/api/user/add', 
+            data: data, 
+            headers: {
+                'CT-public-api-key': keys.public
+            }
+        });
+         
+        
+        const success = res => { 
+            if( res.data.is_error ) {
+                result.current.innerHTML = res.data.data;
+                result.current.classList.add("error");
+                result.current.classList.add("show");                
+            } else {
+                result.current.innerHTML = res.data.data;
+                result.current.classList.add("success");
+                result.current.classList.add("show");
+            }
+            
+            stopBtnProgress();
+        };
+
+        const error = res => {
+            console.log(res);
+            stopBtnProgress();
+        };
+
+
+        request.then(success, error);
+
+
+
     }
       
     return (
@@ -143,11 +196,11 @@ let Register = () => {
             </h1> 
             <p>Come join us today and be part of making CodedTag.com even better for the future.</p>
             
-            <input type="text" ref={user_name} onChange={(e) => setUsername(e.target.value)} onKeyDown={(e) => removeHighlightedBorder(e)} placeholder="Username" name="username" />
-            <input type="text" ref={full_name} onChange={(e) => setFullName(e.target.value)} placeholder="Your Full Name" name="userfullname" />
-            <input type="text" ref={user_email} onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => removeHighlightedBorder(e)} placeholder="You Email" name="useremail" />
-            <input type="text" ref={user_password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" onKeyDown={(e) => removeHighlightedBorder(e)} onInput={onInputPasswords} name="userpassword" />
-            <input type="text" ref={user_confirm_password} onChange={(e) => setConfirmPassword(e.target.value)} onKeyDown={(e) => removeHighlightedBorder(e)} onInput={onInputPasswords} placeholder="Confirm Password" name="userconfirmpasswor" />
+            <input onFocus={truncateError} type="text" ref={user_name} onChange={(e) => setUsername(e.target.value)} onKeyDown={(e) => removeHighlightedBorder(e)} placeholder="Username" name="username" />
+            <input onFocus={truncateError} type="text" ref={full_name} onChange={(e) => setFullName(e.target.value)} placeholder="Your Full Name" name="userfullname" />
+            <input onFocus={truncateError} type="text" ref={user_email} onChange={(e) => setEmail(e.target.value)} onKeyDown={(e) => removeHighlightedBorder(e)} placeholder="You Email" name="useremail" />
+            <input onFocus={truncateError} type="text" ref={user_password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" onKeyDown={(e) => removeHighlightedBorder(e)} onInput={onInputPasswords} name="userpassword" />
+            <input onFocus={truncateError} type="text" ref={user_confirm_password} onChange={(e) => setConfirmPassword(e.target.value)} onKeyDown={(e) => removeHighlightedBorder(e)} onInput={onInputPasswords} placeholder="Confirm Password" name="userconfirmpasswor" />
  
 
             <div className="flexbox items-center flex-wrap mb-20 gap-20">
@@ -163,9 +216,10 @@ let Register = () => {
              
             <div className="response" ref={result}></div>
 
-            <button ref={buttonSubmit} type="submit" className='btn third-btn radius-5 custom-header-btn offset-left full-wide-btn xl'>
+            <button ref={buttonSubmit} type="submit" className='btn third-btn radius-5 custom-header-btn offset-left full-wide-btn xl ht-sign'>
                 Register
             </button>
+
           </form>
     );
 }

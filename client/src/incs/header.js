@@ -1,5 +1,5 @@
 import {Navs} from '../controller/navs';
-
+import logo from './../assets/img/logo-3.png';
 
 var Header = () => {
 
@@ -8,7 +8,7 @@ var Header = () => {
             <nav className="flexbox items-center offset-left offset-right plr-15 max-1150">
                 
                 <a className="site-logo" href="#">
-                    <img src="assets/img/logo-3.png" alt="Logo Site" width="135" height="36" />
+                    <img src={logo} alt="Logo Site" width="135" height="36" />
                 </a>
 
                 <Navs 

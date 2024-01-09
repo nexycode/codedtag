@@ -1,9 +1,17 @@
  
 
 var conf = { 
-
+      capcha: { 
+            secret:'6LefOUopAAAAAKDP80U5BQ8v-U10T_H2IF0WCZ9P'
+      },
       server: {
             api: "/api",
+            devMode: true, 
+            port: process.env.port || 5000,
+            root: {
+                  client: "localhost:3000",
+                  server: "localhost"
+            },
             // think how to hide the secret one when send it to client
             keys: { 
                   secret: {
@@ -14,13 +22,7 @@ var conf = {
                         part: "Codedtag Tutorial Community",
                         main: "#12sdswe457vdsfkjsdn445qw42@#$%^&*()_+}{89%%$#@!@#{}66XCVBm"
                   }
-            },
-            devMode: true, 
-            port: process.env.port || 5000,
-            root: {
-                  dev: `http://localhost`, 
-                  ip: "https://codedtag.com"
-            } 
+            }
       }, 
       
       email: {
@@ -37,7 +39,7 @@ var conf = {
             confirm_email: { 
                   sender: "moun2030@gmail.com",
                   // change this part only = https://example.com/activation-link
-                  confirmation_link: "https://example.com/activation-link?code=[USER-TOKEN]"
+                  confirmation_link: "[HOST-NAME]/activating-account/[USER-TOKEN]"
             }
       },
 
@@ -54,12 +56,12 @@ var conf = {
 
 };
 
-// Configure Ip Addresses
-conf.server.root.dev = `${conf.server.root.dev}:${conf.server.port}/` ;
+ 
+// Client Activation Link
+conf.email.confirm_email.confirmation_link = conf.email.confirm_email.confirmation_link.replace("[HOST-NAME]", conf.server.root.client);
+
+// Database
 conf.database.link = `${conf.database.host}:${conf.database.port}/${conf.database.name}` ;
-
-
-//console.log(conf.database.link);
-
+ 
 
 module.exports = conf;

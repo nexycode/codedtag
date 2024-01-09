@@ -3,6 +3,34 @@ const conf = require("./../conf/configuration");
 // CT-public-api-key => in header            
 // Secret-codedtag-api-key => in body request     
 
+const verifiy_google_capcha = (req,res, next) => {
+    
+    var obj = {
+        is_error: true,
+        data: "Please confirm that you are not a robot.",
+        success: false
+    }
+
+    if( req.body.capcha === undefined || req.body.capcha == '' ) {
+        obj.data = "Please confirm that you are not a robot.";
+        return res.send(obj);
+    }
+
+    fetch(`https://www.google.com/recaptcha/api/siteverify?secret=${conf.capcha.secret}&response=${req.body.capcha}`)
+    .then((res) => {
+        return res.json();
+    })
+    .then((response) => { 
+        if(response.success) {
+            next();
+        }else {
+            return res.send(obj);
+        }
+    });
+ 
+
+};
+
 const verify_api_keys = ( req, res, next ) => {
 
     var objx = {
@@ -44,4 +72,4 @@ const verify_api_keys = ( req, res, next ) => {
  
 
 
-module.exports = { verify_api_keys };
+module.exports = { verify_api_keys, verifiy_google_capcha };

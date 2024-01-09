@@ -14,7 +14,7 @@ const {User, Application} = require("./../models/users");
 const conf = require('./../conf/configuration');
 
 // Tokens and Api Keys
-const { verify_api_keys } = require("./../auth/application_tokens.js");
+const { verify_api_keys, verifiy_google_capcha } = require("./../auth/application_tokens.js");
 
 // Helper Functions 
 const validateEmail = (email) => {
@@ -98,7 +98,7 @@ userRouters.post("/user/subscribe", verify_api_keys, async (req, res) => {
 });
 
 // Add new User
-userRouters.post("/user/add", verify_api_keys, async (req, res) => {
+userRouters.post("/user/add", [verify_api_keys, verifiy_google_capcha], async (req, res) => {
 
     var objx = {
         is_error: true,
@@ -199,9 +199,13 @@ userRouters.post("/user/add", verify_api_keys, async (req, res) => {
         usrx.token = token;
         sendActivationCode(usrx, function(obj){
             if ( ! obj.status_code) {
+                
                 objx.data = obj.data;
                 return res.send(objx);
             } else {
+
+                objx.is_error = false;
+                objx.success = true;
                 objx.data = obj.data;
                 return res.send(objx);
             }
@@ -280,7 +284,7 @@ var sendActivationCode = async (user, callback) => {
             }); 
         } else { 
             return callback({
-                data: "We've sent the activation link to your email. Kindly confirm your email to proceed.",
+                data: "Thank you for signing up! We've sent an activation link to your email. Please check your email and click on the link to complete the sign-up process.",
                 status_code: 1
             });  
         }

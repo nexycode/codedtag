@@ -412,7 +412,7 @@
     padding: 15px 0;
     @include flex-display;
     @include align-items(center);
-    @include justify-content(start);
+    @include justify-content(flex-start);
     // @include flex-direction(column);
     border-radius: 10px;
     position: relative;
@@ -1038,8 +1038,8 @@
       cursor: pointer;
       padding: 15px 0;
       @include flex-display;
-      @include align-items(start);
-      @include justify-content(start);
+      @include align-items(flex-start);
+      @include justify-content(flex-start);
       @include flex-direction(column);
       // @include flex-direction(column);
       border-radius: 10px;

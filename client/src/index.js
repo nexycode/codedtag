@@ -4,6 +4,8 @@
 
 import React from 'react';
 import ReactDom from 'react-dom/client';
+import {BrowserRouter, Routes, Route } from 'react-router-dom';
+import './assets/css/main.min.css';
 
 // Tempalte Parts 
 import Header from './incs/header';
@@ -14,7 +16,7 @@ import {ContextApiKeys} from './utils/api-keys.js';
 
 // Components 
 import {Register} from './components/register.js'; 
-
+import {ActivitingAccount} from './components/activating-account.js';  
 
 
 
@@ -26,12 +28,18 @@ let Components = () => {
       return (
             <>
             <React.StrictMode>
-                  <ContextApiKeys>
-                        <Header />
-                        <AnimatedSidebar /> 
-                        <Component element={Register} />
-                        <Footer />
-                  </ContextApiKeys>
+                  <BrowserRouter>
+                        <ContextApiKeys>
+                              <Header />
+                              <AnimatedSidebar /> 
+                              <Routes>
+                                    <Route path="/register" element={<Component element={Register} />} />
+                                    <Route path="/activating-account/:code" element={<Component element={ActivitingAccount} />} />
+
+                              </Routes>
+                              <Footer />
+                        </ContextApiKeys>
+                  </BrowserRouter>
             </React.StrictMode>
             </>
       );
