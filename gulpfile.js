@@ -9,7 +9,7 @@ const sass = gulpSass( dartSass );
 var config = {
     css: {
         from: "./front-end/scss/**/*.scss",
-        to:"./client/assets/src/css"
+        to:"./client/src/assets/css"
     }  
 }
 

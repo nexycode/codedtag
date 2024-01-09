@@ -872,3 +872,20 @@ a.not-full-btn {
         box-shadow: 32px 0 #FFF, -32px 0 #FFF2;
     }
 }
+
+.highlighted-block {
+    padding: 20px; 
+    border: 1px solid #eee;
+    background-color: #fff;
+    display: block;
+    font-size: 15px;
+    border-radius: 5px;
+    font-weight: 400;
+    color: #000;
+
+    a {
+        text-decoration: underline;
+        font-weight: 600;
+    }
+}
+ 

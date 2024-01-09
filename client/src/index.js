@@ -16,6 +16,7 @@ import {ContextApiKeys} from './utils/api-keys.js';
 
 // Components 
 import {Register} from './components/register.js'; 
+import {Login} from './components/login.js';
 import {ActivitingAccount} from './components/activating-account.js';  
 
 
@@ -33,8 +34,10 @@ let Components = () => {
                               <Header />
                               <AnimatedSidebar /> 
                               <Routes>
-                                    <Route path="/register" element={<Component element={Register} />} />
-                                    <Route path="/activating-account/:code" element={<Component element={ActivitingAccount} />} />
+                                    
+                                    <Route path="login/" element={<Component element={Login} />} />
+                                    <Route path="register/" element={<Component element={Register} />} />
+                                    <Route path="activating-account/:code/" element={<Component element={ActivitingAccount} />} />
 
                               </Routes>
                               <Footer />
