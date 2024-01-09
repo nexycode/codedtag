@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "dev-start": "react-scripts start",
-    "build": "react-scripts build"
+    "build": "react-scripts build",
+    "update": "npm update"
   },
   "author": "",
   "license": "ISC",

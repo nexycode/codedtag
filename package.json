@@ -7,7 +7,15 @@
     "start:dev": "npm-run-all --parallel nodemon:start react:start gulp:start",
     "react:start": "npm --prefix ./client run dev-start",
     "nodemon:start": "npm --prefix ./server run dev-start",
-    "gulp:start": "gulp watch"
+    "gulp:start": "gulp watch",
+
+
+    "start:update": "npm-run-all --parallel server:update client:update front:update",
+    "server:update":"npm --prefix ./server run update", 
+    "client:update":"npm --prefix ./client run update", 
+    "front:update":"npm update",
+
+    "up:git": "git add .; git commit -m'updates'; git push origin master;"
   },
   "keywords": [],
   "author": "",

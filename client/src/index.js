@@ -10,6 +10,8 @@ import Header from './incs/header';
 import Footer from './incs/footer';
 import AnimatedSidebar from './incs/animated-sidebar'
 
+import {ContextApiKeys} from './utils/api-keys.js';
+
 // Components 
 import {Register} from './components/register.js'; 
 
@@ -24,10 +26,12 @@ let Components = () => {
       return (
             <>
             <React.StrictMode>
-                  <Header />
-                  <AnimatedSidebar /> 
+                  <ContextApiKeys>
+                        <Header />
+                        <AnimatedSidebar /> 
                         <Component element={Register} />
-                  <Footer />
+                        <Footer />
+                  </ContextApiKeys>
             </React.StrictMode>
             </>
       );
