@@ -190,7 +190,7 @@ let Register = () => {
     }
       
     return (
-          <form onSubmit={onSubmit} className="custom-field-form text-center wrapper max-500 offset-left offset-right ptb-50 hero  plr-15">
+          <form onSubmit={onSubmit} className="highlight-form max-100-hidden custom-field-form text-center wrapper max-500 offset-left offset-right ptb-50 hero  plr-15">
             <h1 className='custom-headline lowercase section-head text-center'>
                 Sign up
             </h1> 

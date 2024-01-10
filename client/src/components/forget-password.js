@@ -20,7 +20,7 @@ import {ApiKeysContext} from './../utils/api-keys';
     }
 */
 
-let Login = () => {
+let ForgetPassword = () => {
     
 
     // Getting Key and secret key 
@@ -88,14 +88,11 @@ let Login = () => {
     return (
           <form onSubmit={onSubmit} className="highlight-form custom-field-form text-center wrapper max-500 offset-left offset-right ptb-50 hero max-100-hidden plr-15">
             <h1 className='custom-headline lowercase section-head text-center'>
-                Login
+                Reset Password
             </h1> 
              
             <input type="text" ref={user_name_or_email}   placeholder="Username or Email" name="username-email" />
-            <input type="text" ref={user_password}  placeholder="Password" name="password" />
-            <span className="forget-password">
-                  Forgot your password? <Link to="/forget-password">Click here</Link>
-            </span>
+             
             
 
             <div className="flexbox items-center flex-wrap mb-20 gap-20">
@@ -103,16 +100,12 @@ let Login = () => {
                     sitekey={siteKey.public}
                     onChange={changedCapcha} 
                 />
-            </div>
-
-            <p>
-            If you don't have an account <Link to="/signup">Sign Up</Link>
-            </p>
+            </div> 
              
             <div className="response" ref={result}></div>
 
             <button ref={buttonSubmit} type="submit" className='btn third-btn radius-5 custom-header-btn offset-left full-wide-btn xl ht-sign'>
-                Login
+                Verify My Email 
             </button>
 
           </form>
@@ -120,4 +113,4 @@ let Login = () => {
 }
 
 
-export {Login};
+export {ForgetPassword};

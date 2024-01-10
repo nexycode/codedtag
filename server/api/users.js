@@ -43,6 +43,7 @@ userRouters.post("/user/subscribe", verify_api_keys, async (req, res) => {
         objx.data = "Email is required"; 
 
         return res.send(objx);
+        res.end();
     }
 
     // validation 
@@ -52,6 +53,7 @@ userRouters.post("/user/subscribe", verify_api_keys, async (req, res) => {
         objx.success = false; 
         objx.data = "Invalid Email"; 
         return res.send(objx);
+        res.end();
     }
 
     // divide the email to parts 
@@ -70,6 +72,7 @@ userRouters.post("/user/subscribe", verify_api_keys, async (req, res) => {
             objx.data = "Email already exists"; 
             objx.success = false; 
             return res.send(objx); 
+            res.end();
         }
 
         var newUser = await User.create({ 
@@ -79,6 +82,7 @@ userRouters.post("/user/subscribe", verify_api_keys, async (req, res) => {
         
         if( ! newUser ) {
             return res.send(objx); 
+            res.end();
         }
 
         objx.data = "Awesome! Thanks for subscribing and joining our community.";
@@ -93,6 +97,7 @@ userRouters.post("/user/subscribe", verify_api_keys, async (req, res) => {
 
     
     return res.send(objx); 
+    res.end();
 
  
 });
@@ -118,6 +123,7 @@ userRouters.post("/user/add", [verify_api_keys, verifiy_google_capcha], async (r
         objx.data = "Ensure you provide your name, email, username, and password for your account";
 
         return res.send(objx); 
+        res.end();
     }
 
     // Validate Email
@@ -127,6 +133,7 @@ userRouters.post("/user/add", [verify_api_keys, verifiy_google_capcha], async (r
         objx.success = false; 
         objx.data = "Invalid Email"; 
         return res.send(objx);
+        res.end();
     }
 
     //- Validate Username and email in database
@@ -143,6 +150,7 @@ userRouters.post("/user/add", [verify_api_keys, verifiy_google_capcha], async (r
 
     if( is_username !== null || email !== null) {
         return res.send(objx);
+        res.end();
     }  
 
     var firstName = '';
@@ -202,13 +210,15 @@ userRouters.post("/user/add", [verify_api_keys, verifiy_google_capcha], async (r
                 
                 objx.data = obj.data;
                 return res.send(objx);
+                res.end();
             } else {
 
                 objx.is_error = false;
                 objx.success = true;
                 objx.data = obj.data;
                 return res.send(objx);
-            }
+                res.end();
+            } 
         });
 
     }
@@ -319,6 +329,7 @@ userRouters.post("/user/send-activation-link",verify_api_keys, async (req, res) 
     if(!req.body.email) {
         objx.data = "email is required!";
         return res.send(objx);
+        res.end();
     }
 
     let user = await User.findOne({email: req.body.email});
@@ -326,6 +337,7 @@ userRouters.post("/user/send-activation-link",verify_api_keys, async (req, res) 
     if( user === null || user.token == '' || user.token == undefined ) {
         objx.data = "We couldn't find your email. Please try signing up again.";
         return res.send(objx);
+        res.end();
     }
  
      
@@ -333,9 +345,11 @@ userRouters.post("/user/send-activation-link",verify_api_keys, async (req, res) 
         if ( ! obj.status_code) {
             objx.data = obj.data;
             return res.send(objx);
+            res.end();
         } else {
             objx.data = obj.data;
             return res.send(objx);
+            res.end();
         }
     });
     
@@ -355,39 +369,233 @@ userRouters.post("/user/verify-activation-link", verify_api_keys, async(req, res
     if( code == undefined ) {
         objx.data = "Code field is required !";
         return res.send(objx);
+        res.end();
     }
-    
-    var decoded = jwt.verify(code,'user-token-159752')
-    if( decoded.token !== undefined ) {
+
+    try {
         
-        var user_id =  decoded.token.split("-")[0];
-        var usr = await User.findById(user_id);
-        if( usr !== null ) {
-
-            if( usr.activated_account ) {
-                objx.data= "Your account has already been activated.";
+        var decoded = jwt.verify(code,'user-token-159752');
+        if( decoded.token !== undefined ) {
+            
+            var user_id =  decoded.token.split("-")[0];
+            var usr = await User.findOne({_id:user_id});
+             
+            if( usr !== null ) {
+                
+                if( usr.activated_account ) {
+                    objx.data= "Your account has already been activated.";
+                    return res.send(objx);
+                    res.end();
+                }
+                var isModified = await User.updateOne({_id:user_id},{
+                    activated_account: true
+                });
+                if(isModified.modifiedCount ) {
+                    objx.is_error= false,
+                    objx.data= "Your account has been activated.",
+                    objx.success= true;
+                    return res.send(objx);
+                    res.end();
+                }else {
+                    objx.is_error= true,
+                    objx.data= "Sorry for the problem. To fix it, just go back to the login page and send the activation link again. If you need help, feel free to contact us!",
+                    objx.success= false;
+                    return res.send(objx);
+                    res.end();
+                }
+            }else {
+                objx.is_error= true,
+                objx.data= "Sorry for the problem. To fix it, just go back to the login page and send the activation link again. If you need help, feel free to contact us!",
+                objx.success= false;
                 return res.send(objx);
+                res.end();
             }
 
-            var isModified = await User.updateOne({_id:user_id},{
-                activated_account: true
-            });
-
-            if(isModified.modifiedCount != undefined && isModified.modifiedCount > 0 ) {
-                objx.is_error= false,
-                objx.data= "Your account has been activated.",
-                objx.success= true;
-            }
-
-            return res.send(isModified);
         }
-         
 
+    } catch (error) {
+        objx.is_error= true,
+        objx.data= "Sorry for the problem. To fix it, just go back to the login page and send the activation link again. If you need help, feel free to contact us!",
+        objx.success= false;
+        return res.send(objx); 
+        res.end();
     }
-    return res.send(isModified);
     
 
-     
+});
+
+
+var sendResetPasswordLink = async (token, name, user_email, callback) => {
+
+    var h1Style = `color: #241c15;
+    font-family: Georgia,Times,'Times New Roman',serif;
+    font-size: 30px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 42px;
+    letter-spacing: normal;
+    margin: 0;
+    padding: 0;
+    text-align: center;`;
+    var pstyle =`color: #6a655f;
+    font-family: 'Helvetica Neue',Helvetica,Arial,Verdana,sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 42px;
+    letter-spacing: normal;
+    margin: 0;
+    padding: 0;
+    text-align: center;`;
+
+    var pStyles = `color: #6a655f;
+    font-family: 'Helvetica Neue',Helvetica,Arial,Verdana,sans-serif;
+    font-size: 16px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: 42px;
+    letter-spacing: normal;
+    margin: 0;
+    padding: 0;
+    text-align: center;`;
+    var aStyle = `color: white;
+    background: #222;
+    border-radius: 10px;
+    padding: 7px 40px;
+    font-weight: bold;
+    margin: 0px 0;
+    display: inline-block;
+    text-decoration: none; 
+    white-space: nowrap;`;
+
+    var obj = {
+        status_code: 0,
+        data: "Something went wrong"
+    };
+
+    const transporter = nodemailer.createTransport(conf.email.settings);
+    var link = conf.email.reset_password.reset_link.replace("[USER-TOKEN]", token);
+    
+    var headline1 = `<h1 style='${h1Style}'>Reset my Account Password</h1>`;
+    var paragraph1 = `<p style='${pStyles}'>Hello ${name}</p>`;
+    var paragraph2 = `<p style='${pStyles}'>Did you request to reset your password at CodedTag?</p>`
+    var paragraph3 = `<p style='${pStyles}'>If yes, just click on the button below.</p>`
+    var btnlink = `<a href="${link}" style="${aStyle}">Reset my Password</a>`;
+    var paragraph4 = `<p style='${pStyles}'>Is the button not working? Please copy the following link and paste it into your browser:</p>`;
+    var paragraph5 = `<p style='color:blue;'>${link}</p>`;
+
+    var body = `${headline1}
+                ${paragraph1}
+                ${paragraph2}
+                ${paragraph3}
+                ${btnlink}
+                ${paragraph4}
+                ${paragraph5}`;
+    
+    var message = {
+        from: conf.email.reset_password.sender,
+        to: user_email,
+        subject: "CodedTag: Reset Your Password",
+        //text: 'Please confirm your email',
+        html:body
+    };       
+    
+    
+    transporter.sendMail(message, async function( error, info ){
+        if (error) {
+            console.log("bcrypt.compare");
+            return callback({
+                data: "Access to SMTP server denied!",
+                status_code: 0
+            })
+        } else { 
+            
+            return callback({
+                data: "We have sent a password reset link to your email. Kindly check your inbox.",
+                status_code: 1
+            });
+        }
+    }); 
+    
+};
+
+// Forget Password 
+userRouters.get("/user/forget-password", verify_api_keys, async(req, res) => {
+    
+    var objx = {
+        is_error: true,
+        data: "Something Went Wrong!",
+        success: false
+    };
+
+
+    if( !req.body.email || req.body.email === '' ) {
+        objx.data = "Email is required";
+        return res.send(objx);
+        res.end();
+    }
+
+    var usr_email = await User.findOne({email: req.body.email});
+    var usr_username = await User.findOne({username: req.body.email});
+    if( usr_username === null && usr_email === null ) {
+        objx.data = "This email or username doesn't exist";
+        return res.send(objx);
+        res.end();
+    }
+
+
+    var usr = usr_email ? usr_email: usr_username;
+    
+    var token = usr.token ? usr.token: ''; 
+    
+    if( !token || token == '') {
+        // Generate a new token 
+        
+        try {
+            
+            var build = usr._id + '-' + usr.email + '-' + usr.username;
+            token = await jwt.sign({token: build}, 'user-token-159752');
+            
+            var filter = usr_email?{email:usr_email.emai}: {username: usr_username.username};
+             
+            await User.updateOne(filter, {token:token});
+            
+            // Send the reset link here
+            sendResetPasswordLink(token, usr.username, usr.email, (response) => {
+                console.log(response);
+
+                return res.send({
+                    is_error: response.status_code?false:true,
+                    data: response.data,
+                    success: response.status_code?true:false,
+                });
+                res.end();
+
+            });
+              
+
+        } catch (error) { }
+    }
+
+    if( token ) {
+
+        // Send the reset link here
+        sendResetPasswordLink(token, usr.username, usr.email, (response) => {
+             
+
+            return res.send({
+                is_error: response.status_code?false:true,
+                data: response.data,
+                success: response.status_code?true:false,
+            });
+            res.end();
+        }); 
+
+    }
+    
+
+    
+    
 });
 
 // Login 
@@ -400,6 +608,7 @@ userRouters.post("/user/login", async(req, res) => {
     };
 
     return res.send(objx);
+    res.end();
 
     console.log("Login api is under building");
     

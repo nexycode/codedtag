@@ -9,18 +9,18 @@ var ContextApiKeys = ({children}) => {
 
     // send request
     const [apiKey, setApiKey] = useState({public: '',secret: ''})
+     
+    useEffect(() =>{ 
 
-    useEffect(() =>{
-        
         fetch(`/api/code`)
         .then((res) => {
             return res.json();
         })
         .then((response) => {
             if( !response.is_error ) {
-
+                
                 var keys = response.data.split("CODEDtag");
-
+                
                 setApiKey({
                     public:keys[1],
                     secret: keys[0]

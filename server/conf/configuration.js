@@ -40,6 +40,12 @@ var conf = {
                   sender: "moun2030@gmail.com",
                   // change this part only = https://example.com/activation-link
                   confirmation_link: "[HOST-NAME]/activating-account/[USER-TOKEN]"
+            },
+
+            reset_password: {
+                  sender: "moun2030@gmail.com",
+                  // change this part only = https://example.com/activation-link
+                  reset_link: "[HOST-NAME]/change-password/[USER-TOKEN]"
             }
       },
 
@@ -59,6 +65,7 @@ var conf = {
  
 // Client Activation Link
 conf.email.confirm_email.confirmation_link = conf.email.confirm_email.confirmation_link.replace("[HOST-NAME]", conf.server.root.client);
+conf.email.reset_password.reset_link = conf.email.reset_password.reset_link.replace("[HOST-NAME]", conf.server.root.client);
 
 // Database
 conf.database.link = `${conf.database.host}:${conf.database.port}/${conf.database.name}` ;
