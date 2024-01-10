@@ -1,8 +1,8 @@
-import React, {useState, useRef, useContext} from "react";
+import React, {useState, useRef, useContext, useEffect} from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import siteKey from './../options/captcha';
 import {validateEmail} from './../utils/email'; 
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import axios from 'axios'; 
 import {ApiKeysContext} from './../utils/api-keys';
 
@@ -22,44 +22,59 @@ import {ApiKeysContext} from './../utils/api-keys';
 
 let ChangePassword = () => {
     
-
+    var {code} = useParams(); 
+    
     // Getting Key and secret key 
-    var keys = useContext(ApiKeysContext);
-    
-    
-    // Getting fields values 
-    var [capcha, setCaptch ] = useState(null);
-    var [username, setUsername ] = useState(null);
-    var [fullname, setFullName ] = useState(null);
-    var [email, setEmail ] = useState(null);
+    var keys = useContext(ApiKeysContext); 
+     
+    // Getting fields values  
     var [password, setPassword ] = useState(null);
     var [confirmPassword, setConfirmPassword ] = useState(null); 
+    var [userExists, setUserExists] = useState(false);
+    var [response, setResponse] = useState("Access Denied !");
+
+    useEffect(function(){
+        if(keys.public != '' ) {
+             
+            var data = {
+                code: code
+            };
+
+            data["Secret-codedtag-api-key"] = keys.secret;
+            
+            var request = axios({
+                method: 'post',
+                url: '/api/user/verify-token', 
+                data:data,
+                headers: {
+                    'CT-public-api-key': keys.public
+                }
+            }); 
+
+            request.then(function(resp){
+                if( resp.data.is_error ) {
+                    setResponse(resp.data.data);
+                } else {
+                    setUserExists(true);
+                }
+            }, function(err){}); 
+
+        }
+
+    },[keys.public]);
     
-    
-    var user_name_or_email = useRef(); 
-    var user_password = useRef(); 
-    var user_email = useRef(); 
     var user_password = useRef(); 
     var user_confirm_password = useRef();
+    
     var buttonSubmit = useRef();
 
-    var result = useRef();
-    var inProgressRequest = false;
- 
-
-    var changedCapcha = (value) => {
-        result.current.innerHTML = "";
-        result.current.classList.remove("show");
-        setCaptch(value);
-    }
-    
-    var removeHighlightedBorder = (e) => {
-        e.target.classList.remove("highlighted-border");
-    };
+    var result = useRef(); 
     
     const onInputPasswords = (e) => {
+        
         var pass = user_password.current.value;
         var confirmpass = user_confirm_password.current.value;
+
         if( confirmpass === pass ) {
             user_password.current.classList.remove("highlighted-border");
             user_confirm_password.current.classList.remove("highlighted-border");
@@ -68,42 +83,81 @@ let ChangePassword = () => {
             result.current.classList.remove("error");
             result.current.classList.remove("success");
         }
+
+        
     }
 
     // Loading in button and pause btn loading 
-    const inProgressBtn = () => {
-        inProgressRequest = true;
+    const inProgressBtn = () => { 
         buttonSubmit.current.innerHTML='<span class="loader"></span>';
     }
 
-    const stopBtnProgress = () => {
-        inProgressRequest = false;
-        buttonSubmit.current.innerHTML="Login";
+    const stopBtnProgress = () => { 
+        buttonSubmit.current.innerHTML="Change My Password";
     }
 
     const onSubmit = (e) => {
-         
+        
+        e.preventDefault();
+        
+        user_password.current.classList.remove("highlighted-border");
+        user_confirm_password.current.classList.remove("highlighted-border");
+        inProgressBtn();
+        
+        // Check if they empty 
+        if( password === null || confirmPassword == null ) {
+
+            result.current.classList.add("error");
+            result.current.classList.add("show");
+            result.current.innerHTML = "In the blank spaces provided, kindly enter your new password twice.";
+            
+            stopBtnProgress();
+            return;
+        }
+
+        // Password confirm  
+        if( password !== confirmPassword ) {
+            result.current.classList.add("error");
+            result.current.classList.add("show");
+            result.current.innerHTML = "Passwords do not match. Please ensure that the passwords entered in both fields are identical";
+            
+            user_password.current.classList.add("highlighted-border");
+            user_confirm_password.current.classList.add("highlighted-border");
+            stopBtnProgress();
+            return;
+        }
+  
     }
       
-    return (
-          <form onSubmit={onSubmit} className="highlight-form custom-field-form text-center wrapper max-500 offset-left offset-right ptb-50 hero max-100-hidden plr-15">
+    var render = (
+        <div style={{borderColor:"red", background:'#ff00000d'}} className="content-center items-center highlight-form custom-field-form text-center wrapper max-500 offset-left offset-right ptb-50 hero max-100-hidden plr-15">
+            <p style={{padding: '0px', margin: '0px', color:"red"}}> 
+            {response}
+            </p>
+        </div>
+    );
+
+  if( userExists ) {
+        render = (
+            <form onSubmit={onSubmit} className="highlight-form custom-field-form text-center wrapper max-500 offset-left offset-right ptb-50 hero max-100-hidden plr-15">
             <h1 className='custom-headline lowercase section-head text-center'>
                 Change Password
             </h1> 
-             
-            <input type="text" placeholder="Your New Password" name="username-email" />
-            <input type="text" placeholder="Confirm the New Password" name="username-email" />
-             
-             
-             
+            
+            <input ref={user_password} onInput={onInputPasswords} onChange={(e) => setPassword(e.target.value)} type="text" placeholder="Your New Password" name="username-email" />
+            <input ref={user_confirm_password} onInput={onInputPasswords} onChange={(e) => setConfirmPassword(e.target.value)} type="text" placeholder="Confirm the New Password" name="username-email" />
+                
             <div className="response" ref={result}></div>
 
             <button ref={buttonSubmit} type="submit" className='btn third-btn radius-5 custom-header-btn offset-left full-wide-btn xl ht-sign'>
                 Change My Password 
             </button>
 
-          </form>
+            </form>
     );
+  }
+  
+  return render;
 }
 
 

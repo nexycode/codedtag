@@ -43,7 +43,7 @@ userRouters.post("/user/subscribe", verify_api_keys, async (req, res) => {
         objx.data = "Email is required"; 
 
         return res.send(objx);
-        res.end();
+       
     }
 
     // validation 
@@ -53,7 +53,7 @@ userRouters.post("/user/subscribe", verify_api_keys, async (req, res) => {
         objx.success = false; 
         objx.data = "Invalid Email"; 
         return res.send(objx);
-        res.end();
+       
     }
 
     // divide the email to parts 
@@ -72,7 +72,7 @@ userRouters.post("/user/subscribe", verify_api_keys, async (req, res) => {
             objx.data = "Email already exists"; 
             objx.success = false; 
             return res.send(objx); 
-            res.end();
+           
         }
 
         var newUser = await User.create({ 
@@ -82,7 +82,7 @@ userRouters.post("/user/subscribe", verify_api_keys, async (req, res) => {
         
         if( ! newUser ) {
             return res.send(objx); 
-            res.end();
+           
         }
 
         objx.data = "Awesome! Thanks for subscribing and joining our community.";
@@ -97,7 +97,7 @@ userRouters.post("/user/subscribe", verify_api_keys, async (req, res) => {
 
     
     return res.send(objx); 
-    res.end();
+   
 
  
 });
@@ -123,7 +123,7 @@ userRouters.post("/user/add", [verify_api_keys, verifiy_google_capcha], async (r
         objx.data = "Ensure you provide your name, email, username, and password for your account";
 
         return res.send(objx); 
-        res.end();
+       
     }
 
     // Validate Email
@@ -133,7 +133,7 @@ userRouters.post("/user/add", [verify_api_keys, verifiy_google_capcha], async (r
         objx.success = false; 
         objx.data = "Invalid Email"; 
         return res.send(objx);
-        res.end();
+       
     }
 
     //- Validate Username and email in database
@@ -150,7 +150,7 @@ userRouters.post("/user/add", [verify_api_keys, verifiy_google_capcha], async (r
 
     if( is_username !== null || email !== null) {
         return res.send(objx);
-        res.end();
+       
     }  
 
     var firstName = '';
@@ -210,14 +210,14 @@ userRouters.post("/user/add", [verify_api_keys, verifiy_google_capcha], async (r
                 
                 objx.data = obj.data;
                 return res.send(objx);
-                res.end();
+               
             } else {
 
                 objx.is_error = false;
                 objx.success = true;
                 objx.data = obj.data;
                 return res.send(objx);
-                res.end();
+               
             } 
         });
 
@@ -329,7 +329,7 @@ userRouters.post("/user/send-activation-link",verify_api_keys, async (req, res) 
     if(!req.body.email) {
         objx.data = "email is required!";
         return res.send(objx);
-        res.end();
+       
     }
 
     let user = await User.findOne({email: req.body.email});
@@ -337,7 +337,7 @@ userRouters.post("/user/send-activation-link",verify_api_keys, async (req, res) 
     if( user === null || user.token == '' || user.token == undefined ) {
         objx.data = "We couldn't find your email. Please try signing up again.";
         return res.send(objx);
-        res.end();
+       
     }
  
      
@@ -345,11 +345,11 @@ userRouters.post("/user/send-activation-link",verify_api_keys, async (req, res) 
         if ( ! obj.status_code) {
             objx.data = obj.data;
             return res.send(objx);
-            res.end();
+           
         } else {
             objx.data = obj.data;
             return res.send(objx);
-            res.end();
+           
         }
     });
     
@@ -369,7 +369,7 @@ userRouters.post("/user/verify-activation-link", verify_api_keys, async(req, res
     if( code == undefined ) {
         objx.data = "Code field is required !";
         return res.send(objx);
-        res.end();
+       
     }
 
     try {
@@ -385,7 +385,7 @@ userRouters.post("/user/verify-activation-link", verify_api_keys, async(req, res
                 if( usr.activated_account ) {
                     objx.data= "Your account has already been activated.";
                     return res.send(objx);
-                    res.end();
+                   
                 }
                 var isModified = await User.updateOne({_id:user_id},{
                     activated_account: true
@@ -395,20 +395,20 @@ userRouters.post("/user/verify-activation-link", verify_api_keys, async(req, res
                     objx.data= "Your account has been activated.",
                     objx.success= true;
                     return res.send(objx);
-                    res.end();
+                   
                 }else {
                     objx.is_error= true,
                     objx.data= "Sorry for the problem. To fix it, just go back to the login page and send the activation link again. If you need help, feel free to contact us!",
                     objx.success= false;
                     return res.send(objx);
-                    res.end();
+                   
                 }
             }else {
                 objx.is_error= true,
                 objx.data= "Sorry for the problem. To fix it, just go back to the login page and send the activation link again. If you need help, feel free to contact us!",
                 objx.success= false;
                 return res.send(objx);
-                res.end();
+               
             }
 
         }
@@ -418,7 +418,7 @@ userRouters.post("/user/verify-activation-link", verify_api_keys, async(req, res
         objx.data= "Sorry for the problem. To fix it, just go back to the login page and send the activation link again. If you need help, feel free to contact us!",
         objx.success= false;
         return res.send(objx); 
-        res.end();
+       
     }
     
 
@@ -532,15 +532,13 @@ userRouters.get("/user/forget-password", verify_api_keys, async(req, res) => {
     if( !req.body.email || req.body.email === '' ) {
         objx.data = "Email is required";
         return res.send(objx);
-        res.end();
     }
 
     var usr_email = await User.findOne({email: req.body.email});
     var usr_username = await User.findOne({username: req.body.email});
     if( usr_username === null && usr_email === null ) {
         objx.data = "This email or username doesn't exist";
-        return res.send(objx);
-        res.end();
+        return res.send(objx);       
     }
 
 
@@ -562,14 +560,13 @@ userRouters.get("/user/forget-password", verify_api_keys, async(req, res) => {
             
             // Send the reset link here
             sendResetPasswordLink(token, usr.username, usr.email, (response) => {
-                console.log(response);
 
                 return res.send({
                     is_error: response.status_code?false:true,
                     data: response.data,
                     success: response.status_code?true:false,
                 });
-                res.end();
+               
 
             });
               
@@ -588,13 +585,46 @@ userRouters.get("/user/forget-password", verify_api_keys, async(req, res) => {
                 data: response.data,
                 success: response.status_code?true:false,
             });
-            res.end();
+           
         }); 
 
     }
     
 
     
+    
+});
+
+// Verify user token 
+userRouters.post("/user/verify-token", verify_api_keys, async(req, res) => {
+    
+    var objx = {
+        is_error: true,
+        data: "Something Went Wrong!",
+        success: false
+    };
+
+
+    if( !req.body.code || req.body.code == '' ) {
+        objx.data = "It appears there is an unauthorized request. To address this issue, please follow the designated authentication process or contact support for assistance.";
+        return res.send(objx);
+    }
+    
+    var code = req.body.code;
+
+    var user = await User.findOne({token: code});
+
+    if( user === null ) {
+        objx.data = "This is an unauthorized request!, please follow the designated authentication process or contact support for assistance.";
+        return res.send(objx);
+    } else {
+        objx.is_error = false;
+        objx.data = "User exists!";
+        objx.success = true;
+        return res.send(objx);
+    }
+
+     
     
 });
 
@@ -608,7 +638,7 @@ userRouters.post("/user/login", async(req, res) => {
     };
 
     return res.send(objx);
-    res.end();
+   
 
     console.log("Login api is under building");
     
