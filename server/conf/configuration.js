@@ -8,8 +8,8 @@ var conf = {
             api: "/api",
             devMode: true, 
             port: process.env.port || 5000,
-            root: {
-                  client: "localhost:3000",
+            root: { 
+                  client: "http://localhost:3000",
                   server: "localhost"
             },
             // think how to hide the secret one when send it to client

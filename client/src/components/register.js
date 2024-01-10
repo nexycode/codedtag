@@ -2,7 +2,7 @@ import React, {useState, useRef, useContext} from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import siteKey from './../options/captcha';
 import {validateEmail} from './../utils/email'; 
-
+import { Link } from "react-router-dom";
 import axios from 'axios'; 
 import {ApiKeysContext} from './../utils/api-keys';
 
@@ -211,7 +211,7 @@ let Register = () => {
             </div>
 
             <p>
-            Or do you have an account? Login
+            Or do you have an account? <Link to="/login">Login</Link>
             </p>
              
             <div className="response" ref={result}></div>

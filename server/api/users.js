@@ -266,8 +266,21 @@ var sendActivationCode = async (user, callback) => {
     text-decoration: none; 
     white-space: nowrap;`;
 
-    var body = "<h1 style='"+h1Style+"'>Please activate your CodedTag account</h1><p style='"+pStyles+"'>Hello "+user.email+"</p><p style='"+pStyles+"'>Thank you for signing up with CodedTag™!</p><p style='"+pStyles+"'>You will activate your account and start to be an author by clicking the button below.</p><a style='"+aStyle+"' href='"+link+"'>Activate Account</a><p style='"+pStyles+"'>Is the button not working? Please copy the following link and paste it into your browser:</p><p style='color:blue;'>"+link+"</p>";
+    var headline1 = `<h1 style='${h1Style}'>Please activate your CodedTag account</h1>`;
+    var paragraph1 = `<p style='${pStyles}'>Hello ${user.email}</p>`;
+    var paragraph2 = `<p style='${pStyles}'>Thank you for signing up with CodedTag™!</p>`
+    var paragraph3 = `<p style='${pStyles}'>You will activate your account and start to be an author by clicking the button below.</p>`
+    var btnlink = `<a href="${link}" style="${aStyle}">Activate Account</a>`;
+    var paragraph4 = `<p style='${pStyles}'>Is the button not working? Please copy the following link and paste it into your browser:</p>`;
+    var paragraph5 = `<p style='color:blue;'>${link}</p>`;
 
+    var body = `${headline1}
+                ${paragraph1}
+                ${paragraph2}
+                ${paragraph3}
+                ${btnlink}
+                ${paragraph4}
+                ${paragraph5}`; 
     var message = {
         from: conf.email.confirm_email.sender,
         to: user.email,
