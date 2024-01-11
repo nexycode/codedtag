@@ -502,8 +502,7 @@ var sendResetPasswordLink = async (token, name, user_email, callback) => {
     
     
     transporter.sendMail(message, async function( error, info ){
-        if (error) {
-            console.log("bcrypt.compare");
+        if (error) { 
             return callback({
                 data: "Access to SMTP server denied!",
                 status_code: 0
@@ -520,7 +519,7 @@ var sendResetPasswordLink = async (token, name, user_email, callback) => {
 };
 
 // Forget Password 
-userRouters.get("/user/forget-password", verify_api_keys, async(req, res) => {
+userRouters.post("/user/forget-password", verify_api_keys, async(req, res) => {
     
     var objx = {
         is_error: true,
@@ -528,14 +527,21 @@ userRouters.get("/user/forget-password", verify_api_keys, async(req, res) => {
         success: false
     };
 
-
-    if( !req.body.email || req.body.email === '' ) {
-        objx.data = "Email is required";
+    // Check capcha 
+    if( !req.body.capcha || req.body.capcha === '' ) {
+        objx.data = "Capcha is required";
         return res.send(objx);
     }
 
-    var usr_email = await User.findOne({email: req.body.email});
-    var usr_username = await User.findOne({username: req.body.email});
+    console.log(req.body.capcha);
+
+    if( !req.body.email_username || req.body.email_username === '' ) {
+        objx.data = "Email or Username is required";
+        return res.send(objx);
+    }
+
+    var usr_email = await User.findOne({email: req.body.email_username});
+    var usr_username = await User.findOne({username: req.body.email_username});
     if( usr_username === null && usr_email === null ) {
         objx.data = "This email or username doesn't exist";
         return res.send(objx);       
@@ -622,9 +628,47 @@ userRouters.post("/user/verify-token", verify_api_keys, async(req, res) => {
         objx.data = "User exists!";
         objx.success = true;
         return res.send(objx);
-    }
+    } 
+    
+});
 
-     
+// change password 
+userRouters.post("/user/change-password", verify_api_keys, async(req, res) => {
+    
+    var objx = {
+        is_error: true,
+        data: "Something Went Wrong!",
+        success: false
+    };
+
+
+    if( !req.body.code || req.body.code == '' || !req.body.password || req.body.password == '' ) {
+        objx.data = "It appears there is an unauthorized request. To address this issue, please follow the designated authentication process or contact support for assistance.";
+        return res.send(objx);
+    }
+    
+    var code = req.body.code;
+    var newPass = req.body.password;
+
+    var user = await User.findOne({token: code});
+
+    if( user === null ) {
+        objx.data = "This is an unauthorized request!, please follow the designated authentication process or contact support for assistance.";
+        return res.send(objx);
+    } else { 
+        user.password = await bcrypt.hash(newPass, 10);
+        try {
+            var responsed = await user.save(); 
+            objx.is_error = false; 
+            objx.data = "You have successfully saved your new password, you can use it to log into your account";
+            objx.success = true; 
+        } catch (error) {
+            objx.data = "Something went wrong, please try later !";
+            objx.is_error = true;
+            objx.success = false;     
+        }
+        return res.send(objx);
+    } 
     
 });
 
@@ -639,8 +683,7 @@ userRouters.post("/user/login", async(req, res) => {
 
     return res.send(objx);
    
-
-    console.log("Login api is under building");
+ 
     
 });
 

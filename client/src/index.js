@@ -4,7 +4,7 @@
 
 import React from 'react';
 import ReactDom from 'react-dom/client';
-import {BrowserRouter, Routes, Route } from 'react-router-dom';
+import {BrowserRouter, Routes, Route, Link } from 'react-router-dom';
 import './assets/css/main.min.css';
 
 // Tempalte Parts 
@@ -20,6 +20,9 @@ import {Login} from './components/login';
 import {ActivitingAccount} from './components/activating-account';  
 import {ForgetPassword} from './components/forget-password';
 import {ChangePassword} from './components/change-password';
+import {Home} from './components/home';
+
+
 let Component = ({element}) => {
       return element();
 }
@@ -35,9 +38,11 @@ let Components = () => {
                               <AnimatedSidebar /> 
                               <Routes>
                                     
+                                    <Route path="/" element={<Component element={Home} />} />
                                     <Route path="/login" element={<Component element={Login} />} />
                                     <Route path="/signup" element={<Component element={Register} />} />
-                                    <Route path="/forget-password" element={<Component element={ForgetPassword} />} /> 
+                                    <Route path="/forget-password" element={<Component element={ForgetPassword} />} />  
+
                                     <Route path="/change-password/:code" element={<Component element={ChangePassword} />} />
                                     <Route path="/activating-account/:code" element={<Component element={ActivitingAccount} />} />
                                     

@@ -31,7 +31,7 @@ let ChangePassword = () => {
     var [password, setPassword ] = useState(null);
     var [confirmPassword, setConfirmPassword ] = useState(null); 
     var [userExists, setUserExists] = useState(false);
-    var [response, setResponse] = useState("Access Denied !");
+    var [response, setResponse] = useState("Loading ...");
 
     useEffect(function(){
         if(keys.public != '' ) {
@@ -126,13 +126,53 @@ let ChangePassword = () => {
             stopBtnProgress();
             return;
         }
-  
+        
+        //-- 
+        var data = {
+            code: code,
+            password: password
+        };
+
+        data["Secret-codedtag-api-key"] = keys.secret;
+        
+        var request = axios({
+            method: 'post',
+            url: '/api/user/change-password', 
+            data:data,
+            headers: {
+                'CT-public-api-key': keys.public
+            }
+        }); 
+
+        request.then(function(resp){
+            stopBtnProgress();
+            if( resp.data.is_error ) {
+                setResponse(resp.data.data);
+            } else {
+                
+                var objex = resp.data;
+                if(objex.is_error) {
+                    setResponse(objex.data);
+                    
+                } else {
+                    setResponse(objex.data);
+                    result.current.innerHTML = objex.data;
+                    result.current.classList.add("success");
+                    result.current.classList.add("show");
+
+                    setTimeout(()=>{
+                        window.location.href = "/login";
+                    }, 2000);
+                }
+
+            }
+        }, function(err){}); 
     }
       
     var render = (
-        <div style={{borderColor:"red", background:'#ff00000d'}} className="content-center items-center highlight-form custom-field-form text-center wrapper max-500 offset-left offset-right ptb-50 hero max-100-hidden plr-15">
-            <p style={{padding: '0px', margin: '0px', color:"red"}}> 
-            {response}
+        <div style={{background:'#ee', borderColor:"#eee"}} className="content-center items-center highlight-form custom-field-form text-center wrapper max-500 offset-left offset-right ptb-50 hero max-100-hidden plr-15">
+            <p style={{padding: '0px', margin: '0px'}}> 
+                {response}
             </p>
         </div>
     );
