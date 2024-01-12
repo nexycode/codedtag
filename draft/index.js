@@ -19,8 +19,13 @@ import {Register} from './components/register';
 import {Login} from './components/login';
 import {ActivitingAccount} from './components/activating-account';  
 import {ForgetPassword} from './components/forget-password';
+import {ChangePassword} from './components/change-password';
 import {Home} from './components/home';
-import ChangePassword from './components/change-password';
+
+
+let Component = ({element}) => {
+      return new element();
+}
 
 let Components = () => { 
       return (
@@ -33,10 +38,14 @@ let Components = () => {
                               <AnimatedSidebar /> 
                               <Routes>
                                     
-                                    <Route path="/signup" element={<Register />} />
-                                    <Route path="/login" element={<Login />} />
-                                    <Route path="/forget-password" element={<ForgetPassword />} />
-                                    <Route path="/change-password/:code" element={<ChangePassword/>} />
+                                    <Route path="/" element={<Component element={Home} />} />
+                                    <Route path="/login" element={<Component element={Login} />} />
+                                    <Route path="/signup" element={<Component element={Register} />} />
+                                    <Route path="/forget-password" element={<Component element={ForgetPassword} />} />  
+
+                                    <Route path="/change-password/:code" element={<Component element={ChangePassword} />} />
+                                    <Route path="/activating-account/:code" element={<Component element={ActivitingAccount} />} />
+                                    
                                      
                               </Routes>
                               <Footer />

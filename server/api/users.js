@@ -532,8 +532,7 @@ userRouters.post("/user/forget-password", verify_api_keys, async(req, res) => {
         objx.data = "Capcha is required";
         return res.send(objx);
     }
-
-    console.log(req.body.capcha);
+    
 
     if( !req.body.email_username || req.body.email_username === '' ) {
         objx.data = "Email or Username is required";
