@@ -6,7 +6,8 @@
   "scripts": {
     "dev-start": "react-scripts start",
     "build": "react-scripts build",
-    "update": "npm update"
+    "update": "npm update",
+    "install": "npm install"
   },
   "proxy": "http://localhost:5000",
   "author": "",

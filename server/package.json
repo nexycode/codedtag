@@ -5,7 +5,8 @@
   "main": "server.js",
   "scripts": {
     "dev-start": "nodemon server.js -e",
-    "update": "npm update"
+    "update": "npm update",
+    "install": "npm install"
   },
   "author": "",
   "license": "ISC",
