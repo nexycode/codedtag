@@ -17,10 +17,11 @@ import {ContextApiKeys} from './utils/api-keys';
 // Components 
 import {Register} from './components/register'; 
 import {Login} from './components/login';
-import {ActivitingAccount} from './components/activating-account';  
 import {ForgetPassword} from './components/forget-password';
 import {Home} from './components/home';
+
 import ChangePassword from './components/change-password';
+import ActivitingAccount from './components/activating-account';  
 
 let Components = () => { 
       return (
@@ -37,6 +38,7 @@ let Components = () => {
                                     <Route path="/login" element={<Login />} />
                                     <Route path="/forget-password" element={<ForgetPassword />} />
                                     <Route path="/change-password/:code" element={<ChangePassword/>} />
+                                    <Route path="/activating-account/:code" element={<ActivitingAccount/>} />
                                      
                               </Routes>
                               <Footer />

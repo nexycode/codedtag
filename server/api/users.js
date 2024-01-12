@@ -672,13 +672,22 @@ userRouters.post("/user/change-password", verify_api_keys, async(req, res) => {
 });
 
 // Login 
-userRouters.post("/user/login", async(req, res) => {
+userRouters.post("/user/login", verify_api_keys, async(req, res) => {
     
     var objx = {
         is_error: true,
         data: "Something Went Wrong!",
         success: false
     };
+
+
+
+    // User doesn't active his account 
+    // user is block 
+    // user is deleted 
+    // update last login date 
+    // if user exists 
+    // add session to browser with his name, token, email, and id  
 
     return res.send(objx);
    

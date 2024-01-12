@@ -22,9 +22,10 @@ class Login extends Component {
             password: null  
         };
 
-        var user_name_or_email = React.createRef(); 
-        var user_password = React.createRef(); 
+        this.user_name_or_email = React.createRef(); 
+        this.user_password = React.createRef(); 
         this.buttonSubmit = React.createRef(); 
+        this.result = React.createRef();
     }
 
     // Assign State Values
@@ -74,6 +75,13 @@ class Login extends Component {
         this.setCaptcha(value);
     }
     
+    removeHighlightedErrors = () => {
+        this.user_password.current.classList.remove("highlighted-border");
+        this.user_name_or_email.current.classList.remove("highlighted-border"); 
+        this.result.current.innerHTML = "";
+        this.result.current.classList.remove("show"); 
+    }
+
     onSubmit = (e) => {
 
         e.preventDefault(); 
@@ -82,6 +90,30 @@ class Login extends Component {
         }
         this.inProgressBtn();
 
+        // Check Capcha
+        if(this.state.captcha == null ) {
+            this.result.current.classList.add("error");
+            this.result.current.classList.add("show");
+            this.result.current.innerHTML = "Captcha is Required";
+            this.stopBtnProgress();
+            return;
+        }
+
+        // Check if username or password are empty 
+        if( this.state.usernameOrEmail === null || this.state.usernameOrEmail === '' || this.state.password === null || this.state.password === '' ) {
+            
+            this.user_name_or_email.current.classList.add("highlighted-border");
+            this.user_password.current.classList.add("highlighted-border");
+            this.result.current.classList.add("show")
+            this.result.current.classList.add("error")
+            this.result.current.innerHTML = "Email or Username and Password are required !";
+            this.stopBtnProgress();
+
+        }
+        
+        var data = {
+            
+        };
 
 
     }
@@ -96,8 +128,8 @@ class Login extends Component {
                     Login
                 </h1>
 
-                <input type="text" ref={this.user_name_or_email}   placeholder="Username or Email" name="username-email" />
-                <input type="text" ref={this.user_password}  placeholder="Password" name="password" />
+                <input onFocus={this.removeHighlightedErrors} type="text" ref={this.user_name_or_email}   placeholder="Username or Email" name="username-email" />
+                <input onFocus={this.removeHighlightedErrors} type="text" ref={this.user_password}  placeholder="Password" name="password" />
                 <span className="forget-password">
                     Forgot your password? <Link to="/forget-password">Click here</Link>
                 </span>
