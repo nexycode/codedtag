@@ -16,12 +16,18 @@ import {ContextApiKeys} from './utils/api-keys';
 
 // Components 
 import {Register} from './components/register'; 
-import {Login} from './components/login';
 import {ForgetPassword} from './components/forget-password';
 import {Home} from './components/home';
 
+// No Distruct
 import ChangePassword from './components/change-password';
 import ActivitingAccount from './components/activating-account';  
+import Login from './components/login';
+
+// Admin Panel
+import {Dashboard } from './components/dashboard';
+
+
 
 let Components = () => { 
       return (
@@ -40,6 +46,8 @@ let Components = () => {
                                     <Route path="/change-password/:code" element={<ChangePassword/>} />
                                     <Route path="/activating-account/:code" element={<ActivitingAccount/>} />
                                      
+                                    <Route path="/dashboard" element={<Dashboard />} />
+
                               </Routes>
                               <Footer />
                   </BrowserRouter>

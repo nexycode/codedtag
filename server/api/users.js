@@ -22,6 +22,8 @@ const validateEmail = (email) => {
     return re.test(email);
 }
   
+const currentTimeStampInSeconds = () => Math.floor(Date.now() / 1000);
+
 // Subscribe
 userRouters.post("/user/subscribe", verify_api_keys, async (req, res) => {
      
@@ -180,7 +182,8 @@ userRouters.post("/user/add", [verify_api_keys, verifiy_google_capcha], async (r
         firstname: sanitizer.sanitize(firstName),
         secondname: sanitizer.sanitize(lastName),
         password: sanitizer.sanitize(password),
-        email: sanitizer.sanitize(useremail)
+        email: sanitizer.sanitize(useremail),
+        register_date: currentTimeStampInSeconds()
     }
 
     userObject.password = await bcrypt.hash(userObject.password, 10);
@@ -679,18 +682,92 @@ userRouters.post("/user/login", verify_api_keys, async(req, res) => {
         data: "Something Went Wrong!",
         success: false
     };
+    
+    // Data Validation 
+    var username_email = req.body.username_email;
+    var user_password = req.body.user_password;
+     
+    if( username_email == null || username_email === undefined || user_password == null || user_password === undefined ) {
+        objx.data = "Username or Email and Password are required !";
+        return res.send(objx);
+    }
 
+    // is email or username ?
+    var usr = await User.findOne({email: username_email});
+    if( usr === null ) {
+        usr = await User.findOne({username: username_email});
+    }
 
+    // user doesn't exists 
+    if( usr === null ) {
+        objx.data = "The username or email you entered does not exist. Please double-check your information and try again.";
+        return res.send(objx);
+    }
 
+    // check password and email 
+    try {
+        
+        var compare = await bcrypt.compare(user_password, usr.password);
+        
+        if( compare == false ) {
+            objx.data = "The username or password entered is incorrect. Please check the information you entered and try again!";
+            return res.send(objx);
+        }
+
+    } catch (e) {
+        objx.data = "The username or password entered is incorrect. Please check the information you entered and try again!";
+        return res.send(objx);
+    }
+    
+    
     // User doesn't active his account 
-    // user is block 
-    // user is deleted 
-    // update last login date 
-    // if user exists 
-    // add session to browser with his name, token, email, and id  
+    if(!usr.activated_account || usr.activated_account == undefined ) {
+        
+        // Send the activation link 
+        sendActivationCode(usr, function(obj){
 
-    return res.send(objx);
-   
+            if ( ! obj.status_code) {
+                objx.data = obj.data;
+            } else {
+                objx.data = "Your account is not activated yet. We've sent an activation link to your email. Please check your inbox, click on the provided link, and then try logging in again.";
+            }
+
+            return res.send(objx);
+
+        }); 
+        
+    } 
+
+    // user is block 
+    else if( usr.is_blocked && usr.is_blocked == true ) {
+        objx.data = "Your account has been blocked. If you'd like to know the reasons for the account lock, please contact our support team for assistance.";
+        return res.send(objx);
+    }
+
+    // user is deleted 
+    else if( usr.is_deleted && usr.is_deleted == true ) {
+        objx.data = "Your account has been deleted, indicating that you no longer use the CodedTag site. If you have any questions or concerns, feel free to reach out to our support team for further assistance.";
+        return res.send(objx);
+    } else {
+
+        // if user exists add session to browser with his name, token, email, and id  
+        req.session.user = {
+            id: usr._id,
+            username: usr.username,
+            email: usr.email,
+        };
+
+        // update last login date 
+        usr.last_log = currentTimeStampInSeconds();
+        await usr.save();
+
+        objx.is_error = false;
+        objx.success = true;
+        objx.data = "You've successfully logged in! The system will redirect you to your dashboard shortly.";
+       
+        return res.send(objx);
+    
+    }
  
     
 });

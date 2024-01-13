@@ -37,27 +37,31 @@ let usersSchema = new Schema({
       },
       username:{
             type : String ,
-            trim: true  
+            trim: true,
+            default: ""  
       },
       firstname: {
             type : String ,
-            trim: true  
+            trim: true,
+            default: ""
       },
       secondname: {
             type : String ,
-            trim: true  
+            trim: true,
+            default: "" 
       },
       password: {
             type: String ,
-            trim : true 
+            trim : true
       },
       siteurl: {
             type: String ,
-            trim : true 
+            trim : true,
+            default: "" 
       },
       image:{
             name: String,
-            data: Buffer
+            data: Buffer 
       },
       email: {
             type: String ,
@@ -66,7 +70,7 @@ let usersSchema = new Schema({
       },
       rule: {
             type: Number,
-            default:0
+            default:0, 
       } , /* Subscriber:0, Contributer:1, Editor:2, Author:3, Admin:4 */
       about: { type : String , trim :true },
       social_links:{
@@ -78,13 +82,28 @@ let usersSchema = new Schema({
                   }
             ]
       },
-      allow_appears_in_search_engine: Boolean,
-      send_newsletter: Boolean,
-      is_blocked: Boolean,
-      is_deleted: Boolean, 
+      allow_appears_in_search_engine: {
+            type: Boolean,
+            default: false
+      },
+      send_newsletter: {
+            type: Boolean,
+            default: true
+      },
+      is_blocked: {
+            type: Boolean,
+            default: false
+      },
+      is_deleted: {
+            type: Boolean,
+            default: false
+      }, 
       register_date:Date,
       last_log:Date,
-      activated_account: Boolean,
+      activated_account: {
+            type: Boolean,
+            default: false
+      },
       application_id:  ObjectId,
       token: {
             type:String,

@@ -14,6 +14,7 @@ var conf = {
             },
             // think how to hide the secret one when send it to client
             keys: { 
+                  session: 'cxczas[poiuuy12{C$RD#}$%&*()D_F+D)F(DD14vb^&*njfhj@#h*#$&^gj5dfg87',
                   secret: {
                         part: "++&&full-stack-developer&&++",
                         main: "CT@#$%^&*()_+}%%**Coded^^^^^Tag**%%+}{88**%%^^XX"

@@ -3,8 +3,8 @@ const {mongoose} = require("./conf/connection");
 const conf = require("./conf/configuration");
 const bodyParser = require('body-parser');
 const path = require("path");
-
-
+const session = require('express-session');
+ 
 
 // Routers
 const {userRouters} = require("./api/users");
@@ -14,6 +14,12 @@ const {keyRouters} = require("./api/tokens");
 
 var app = express();
  
+app.use(session({
+    secret: conf.server.keys.session, 
+    resave: false,
+    saveUninitialized: true,
+}));
+
 
 //app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: false}));

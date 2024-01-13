@@ -2,9 +2,14 @@ import React, {  Component } from "react";
 import ReCAPTCHA from "react-google-recaptcha";
 import siteKey from './../options/captcha';
 import { validateEmail } from './../utils/email'; 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios'; 
 import { ApiKeysContext } from './../utils/api-keys';
+ 
+
+function withNavigate(Component) {
+    return props => <Component navHook={useNavigate()} />;
+}
 
 class Login extends Component {
  
@@ -26,10 +31,13 @@ class Login extends Component {
         this.user_password = React.createRef(); 
         this.buttonSubmit = React.createRef(); 
         this.result = React.createRef();
+
+        
     }
 
     // Assign State Values
     setCaptcha = (captcha) => {
+        
         this.setState({
             captcha: captcha
         })
@@ -94,6 +102,7 @@ class Login extends Component {
         if(this.state.captcha == null ) {
             this.result.current.classList.add("error");
             this.result.current.classList.add("show");
+            this.result.current.classList.remove("success");
             this.result.current.innerHTML = "Captcha is Required";
             this.stopBtnProgress();
             return;
@@ -104,18 +113,57 @@ class Login extends Component {
             
             this.user_name_or_email.current.classList.add("highlighted-border");
             this.user_password.current.classList.add("highlighted-border");
-            this.result.current.classList.add("show")
-            this.result.current.classList.add("error")
+            this.result.current.classList.add("show");
+            this.result.current.classList.add("error");
+            this.result.current.classList.remove("success");
             this.result.current.innerHTML = "Email or Username and Password are required !";
             this.stopBtnProgress();
-
+            return;
         }
         
         var data = {
+            username_email: this.state.usernameOrEmail,
+            user_password: this.state.password,
+            capcha: this.state.captcha
+        };
+
+        data["Secret-codedtag-api-key"] = this.context.secret;
+
+        var request = axios({
+            method: 'post',
+            url: '/api/user/login', 
+            data: data, 
+            headers: {
+                'CT-public-api-key': this.context.public
+            }
+        });
+
+        const success = res => { 
+            if( res.data.is_error ) {
+                this.result.current.innerHTML = res.data.data;
+                this.result.current.classList.add("error");
+                this.result.current.classList.add("show");  
+                this.result.current.classList.remove("success");              
+            } else {
+                this.result.current.innerHTML = res.data.data;
+                this.result.current.classList.add("success");
+                this.result.current.classList.add("show");
+                 
+                
+                setTimeout(() => { 
+                    this.props.navHook('/dashboard');
+                }, 2000)
+            }
             
+            this.stopBtnProgress();
+        };
+
+        const error = res => { 
+            this.stopBtnProgress();
         };
 
 
+        request.then(success, error);
     }
 
     // Render method for the Register component
@@ -128,8 +176,8 @@ class Login extends Component {
                     Login
                 </h1>
 
-                <input onFocus={this.removeHighlightedErrors} type="text" ref={this.user_name_or_email}   placeholder="Username or Email" name="username-email" />
-                <input onFocus={this.removeHighlightedErrors} type="text" ref={this.user_password}  placeholder="Password" name="password" />
+                <input onFocus={this.removeHighlightedErrors} onChange={(e) => this.setEmailOrUser(e.target.value)} type="text" ref={this.user_name_or_email}   placeholder="Username or Email" name="username-email" />
+                <input onFocus={this.removeHighlightedErrors} onChange={(e) => this.setPassword(e.target.value)} type="text" ref={this.user_password}  placeholder="Password" name="password" />
                 <span className="forget-password">
                     Forgot your password? <Link to="/forget-password">Click here</Link>
                 </span>
@@ -159,4 +207,4 @@ class Login extends Component {
  
 
 // Export the Register component
-export { Login };
+export default withNavigate(Login); 
