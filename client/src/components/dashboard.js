@@ -1,21 +1,19 @@
+//https://www.npmjs.com/package/react-script-tag
 const { Component } = require("react");
-import {appendStylesheets} from './../assets/css/styles';
-
+ 
 class Dashboard extends Component {
      
 
     componentDidMount = () => {
-        
-        // Append Dashboard Styles
-        appendStylesheets();
-        
+         
+
     }
 
     render = () => {
         
         return (
             <h1>
-                Dashboard
+                Hello World
             </h1>
         );
 

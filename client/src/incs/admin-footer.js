@@ -1,5 +1,4 @@
-
-import {Styles} from './../assets/css/styles';
+ 
 
 var AdminFooter = () => {
     return (
