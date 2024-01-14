@@ -10,7 +10,7 @@ var config = {
     css: {
         from: "./front-end/scss/**/*.scss",
         to:"./client/src/assets/css"
-    }  
+    }
 }
 
 
