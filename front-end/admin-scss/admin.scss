@@ -8,7 +8,7 @@ body {
 }
 
 header {
-    ul li {
+    ul > li {
         a  {
             color: #222 !important;
             span .stroke-color {
@@ -16,7 +16,7 @@ header {
             }
         }
 
-        &:hover a {
+        &:hover > a {
             color: rgba(59, 130, 246, 1) !important;
             span .stroke-color {
                 stroke: rgba(59, 130, 246, 1) !important;
@@ -41,23 +41,83 @@ header {
  }
 
 
- .subitem-bas-on-click {
+ .user-menu {
     position: absolute;
-    background-color: red;
+    background-color: #fff;
     list-style: none;
     display: block;
     padding: 0;
     right: 5px;
-    width: 180px; 
+    width: 250px; 
     border: 1px solid #eee;
     line-height: 1.5;
+    padding: 25px;
+    border-radius: 15px;
+    margin-top: 5px;
+    ul {
+        margin-top: 15px;
+        li:first-child {
+            margin-top: 20px;
+        }
+        li:not(:last-child) {
+            margin-bottom: 20px;
+        }
+    }
+    .user-name {
+        padding: 0px 0 15px 0;
+        border-bottom: 1px solid #eee;
+        a {
+         
+            color: #000;
+            font-size: 15px;
+    
+        }
+
+    }
+
     li, a {
+    
+        --tw-text-opacity:1;
         padding: 0 !important;
-        
-        display: block;
-        padding: 5px !important;
+        color: rgb(71 85 105/var(--tw-text-opacity)) !important;
+        display: block; 
         font-size: 13px;
-        font-weight: bold;
-        background-color: #fff;
+        font-weight: 500; 
     } 
+
+
+ }
+
+ .has-icon-only a {
+    padding: 0 2px !important;
+ }
+
+
+ .has-label a {
+    position: relative;
+    span:last-child {
+        background-color: red;
+        min-width: 20px;
+        min-height: 20px; 
+        padding: 0;
+        color: #fff;
+        line-height: 1; 
+        border-radius: 50%;
+        position: absolute;
+        top: -10px;
+        right: 11px;
+        font-size: 11px;
+    }
+ }
+
+ .logout-in-menu {
+    border-top: 1px solid #eee;
+    margin-top: 25px;
+    a { 
+        display: block;
+        width: 100%;
+    }
+ }
+ .pt-xsdsd {
+    padding-top: 20px;
  }
