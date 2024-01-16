@@ -61,28 +61,28 @@ class Dashboard extends Component {
 
                                         <li>
                                             <a href='#' className="flexbox items-center">
-                                                <span className="mr-5 flexbox">{Icons.articles}</span>    
+                                                <span className="mr-5 flexbox icon-x35">{Icons.articles}</span>    
                                                 <span>My Articles</span>
                                             </a>
                                         </li>
 
                                         <li>
                                             <a href='#' className="flexbox items-center">
-                                                <span className="mr-5 flexbox">{Icons.question}</span>    
+                                                <span className="mr-5 flexbox icon-x35">{Icons.question}</span>    
                                                 <span>My Questions</span>
                                             </a>
                                         </li>
 
                                         <li>
                                             <a href='#' className="flexbox items-center">
-                                                <span className="mr-5 flexbox">{Icons.answer}</span>    
+                                                <span className="mr-5 flexbox icon-x35">{Icons.answer}</span>    
                                                 <span>My Answers</span>
                                             </a>
                                         </li>
 
                                         <li>
                                             <a href='#' className="flexbox items-center">
-                                                <span className="mr-5 flexbox">{Icons.setting}</span>    
+                                                <span className="mr-5 flexbox icon-x35">{Icons.setting}</span>    
                                                 <span>Account Settings</span>
                                             </a>
                                         </li> 

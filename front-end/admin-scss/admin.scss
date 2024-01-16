@@ -21,6 +21,10 @@ header {
             span .stroke-color {
                 stroke: rgba(59, 130, 246, 1) !important;
             }
+
+            span .fill-color {
+                fill: rgba(59, 130, 246, 1) !important;
+            }
         }
     }
 }
@@ -121,3 +125,9 @@ header {
  .pt-xsdsd {
     padding-top: 20px;
  }
+
+ .icon-x35 {
+    width: 25px;
+    margin-right: 0; 
+    
+}
