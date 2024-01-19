@@ -1,0 +1,35 @@
+
+/tutorials => contains ( tags - categories )
+	/php
+	/php/php-constant
+/poilcy
+/terms-conditions
+/404
+
+/search []
+
+
+
+------------------------------------
+/manage
+/manage/pages
+/manage/contact
+/manage/tags
+/manage/categories
+/manage/tutorials
+/manage/tutorials/chapters
+/manage/tutorials/chapters/posts
+/manage/settings
+/manage/links ( extract all posts internal links and external links and enble update using the block id )
+/manage/sitemap
+/manage/robot
+/manage/htaccess
+
+
+/access
+/signup ( for admin only )
+
+
+
+
+/users
