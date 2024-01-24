@@ -26,6 +26,7 @@ app.use(session({
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
+/*
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE'); // => OPTIONS, PUT,
@@ -33,14 +34,12 @@ app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
     next();
 });
+*/
 
 app.use( conf.server.api, keyRouters );
 app.use( conf.server.api, menuRouters );
 app.use( conf.server.api,  userRouters );
  
-
-
-
-
+ 
 
 app.listen(conf.server.port, () => console.log(`The server is running on port ${conf.server.port}`));
