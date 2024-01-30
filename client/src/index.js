@@ -5,7 +5,7 @@
 import  './options/helpers.js'
 import './assets/css/main.min.css';
 
-import React from 'react';
+import React,  { useState }  from 'react';
 import ReactDom from 'react-dom/client';
 import {BrowserRouter, Routes, Route } from 'react-router-dom';
 
@@ -31,7 +31,7 @@ import ActivitingAccount from './components/activating-account';
 import Login from './components/login';
 
 // Admin Panel
-import {Dashboard } from './components/dashboard';
+import {Dashboard } from './components/dashboard'; 
 
 
 
@@ -42,7 +42,9 @@ let Components = () => {
             "/menu"
       ];
       
-      var isScreen = admin.existsPath(window.location.pathname);
+      var [setScreen, screen ] = useState('');
+
+      var setScreen = admin.existsPath(window.location.pathname);
 
       return (
             <>
@@ -50,9 +52,9 @@ let Components = () => {
                         <ContextApiKeys>
                               <BrowserRouter>
 
-                                    {isScreen ? null: <Header />} 
-                                    {/*isScreen ? <AdminHeader /> : null */} 
-                                    {isScreen ? null: <AnimatedSidebar />} 
+                                    {screen ? null: <Header />} 
+                                    {/*screen ? <AdminHeader /> : null */} 
+                                    {screen ? null: <AnimatedSidebar />} 
                                           <Routes>
                                                 <Route path="/signup" element={<Register />} />
                                                 <Route path="/login" element={<Login />} />
@@ -65,8 +67,8 @@ let Components = () => {
                                                 <Route path="/dashboard" element={<Dashboard />} />
                                           </Routes>
 
-                                    {isScreen ? null: <Footer />} 
-                                    {/* {isScreen ? <AdminFooter /> : null */ } 
+                                    {screen ? null: <Footer />} 
+                                    {/* {screen ? <AdminFooter /> : null */ }  
                               </BrowserRouter>                  
                         </ContextApiKeys>
                   </React.StrictMode>
