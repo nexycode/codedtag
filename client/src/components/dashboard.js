@@ -13,11 +13,13 @@ class Dashboard extends Component {
     }
 
     render = () => {
-        
+         
+       
         return (
             <>
                 <header className="wrapper white-bg border-bottom plr-0">
                     <nav className="flexbox items-center offset-left offset-right plr-15 max-1150">
+                        
                         <ul className="inline-list left-p-30 main-nav font-13 bold-list">
                             <li>
                                 <a href='#' className="flexbox items-center">
@@ -25,14 +27,13 @@ class Dashboard extends Component {
                                         {Icons.view}
                                     </span>
                                     <span>
-                                        View Account
+                                        View Site
                                     </span>
                                 </a>
                             </li> 
                         </ul>
 
                         <ul className="inline-list left-p-30 main-nav font-13 bold-list offset-right">
-                            
                             <li className="has-icon-only has-label">
                                 <a href="#">
                                     <span className="flexbox items-center">
@@ -40,10 +41,31 @@ class Dashboard extends Component {
                                     </span>
                                     <span className="flexbox items-center content-center">10</span>
                                 </a>
-                            </li>
+                            </li>                             
+                        </ul>
 
-                            <li className="has-subitem">
+                        
+
+                    </nav>
+                </header>
+            </>
+        );
+
+    }
+}
+
+
+export {Dashboard};
+
+
+
+ /* 
+        
+        <li className="has-subitem">
                                 <a href='#' className="flexbox items-center make-bg-hover">
+                                   <span>
+                                    Lilian Micha'el 
+                                   </span>
                                    <span className="flexbox items-center img-thumb-cover">
                                         <img src="https://webdeveloper.com/wp-content/uploads/2022/05/ManoelaIlic_Portrait-46x50.jpg" alt="Profile" />
                                    </span> 
@@ -98,19 +120,4 @@ class Dashboard extends Component {
 
                                 
                             </li> 
-
-                            
-                        </ul>
-
-                        
-
-                    </nav>
-                </header>
-            </>
-        );
-
-    }
-}
-
-
-export {Dashboard};
+        */

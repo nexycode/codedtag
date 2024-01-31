@@ -9,7 +9,7 @@
     "update": "npm update",
     "install": "npm install"
   },
-  "proxy": "http://localhost:5000/",
+  "proxy": "http://localhost:5000",
   "author": "",
   "license": "ISC",
   "devDependencies": {
