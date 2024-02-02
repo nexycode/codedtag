@@ -77,10 +77,7 @@ var Header = () => {
                                         <span className="flexbox items-center content-center">10</span>
                                     </a>
                                 </li>                             
-                            </ul>
-
-                            
-
+                            </ul> 
                         </nav>
                     </header>;
 

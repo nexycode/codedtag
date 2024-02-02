@@ -14,19 +14,24 @@ const {keyRouters} = require("./api/tokens");
 
 var app = express();
  
+
+
+
+  
 app.use(session({
     secret: conf.server.keys.session, 
     resave: false,
     saveUninitialized: true,
 }));
 
+ 
 
 //app.use(bodyParser.json());
 //app.use(bodyParser.urlencoded({ extended: false}));
 app.use(bodyParser.json({limit: '50mb'}));
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 
-/*
+ 
 app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Origin', '*');
     res.header('Access-Control-Allow-Methods', 'GET, POST, PATCH, DELETE'); // => OPTIONS, PUT,
@@ -34,7 +39,7 @@ app.use(function (req, res, next) {
     res.header('Access-Control-Allow-Credentials', true);
     next();
 });
-*/
+ 
 
 app.use( conf.server.api, keyRouters );
 app.use( conf.server.api, menuRouters );

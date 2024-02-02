@@ -764,7 +764,14 @@ userRouters.post("/user/login", verify_api_keys, async(req, res) => {
         objx.is_error = false;
         objx.success = true;
         objx.data = "You've successfully logged in! The system will redirect you to your dashboard shortly.";
-       
+        objx.user = {
+            username: usr.username,
+            firstname: usr.firstname,
+            secondname: usr.secondname,
+            email: usr.email,
+            rule: usr.rule
+        }
+
         return res.send(objx);
     
     }

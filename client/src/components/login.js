@@ -130,6 +130,7 @@ class Login extends Component {
         data["Secret-codedtag-api-key"] = this.context.secret;
 
         var request = axios({
+            withCredentials: true,
             method: 'post',
             url: '/api/user/login', 
             data: data, 
@@ -145,14 +146,34 @@ class Login extends Component {
                 this.result.current.classList.add("show");  
                 this.result.current.classList.remove("success");              
             } else {
+
+                              
+                
+                var usr = res.data.user;
+                    
+                if( usr.rule == 0 ) {
+
+                    this.result.current.innerHTML = "Access Denied!";
+                    this.result.current.classList.add("error");
+                    this.result.current.classList.add("show"); 
+                    this.stopBtnProgress();
+
+                    return;
+                    debugger;
+                }
+
                 this.result.current.innerHTML = res.data.data;
                 this.result.current.classList.add("success");
-                this.result.current.classList.add("show");
-                 
-                
-                setTimeout(() => { 
-                    this.props.navHook('/dashboard');
-                }, 2000)
+                this.result.current.classList.add("show"); 
+ 
+                setTimeout(() => {  
+
+                    localStorage.setItem('session', JSON.stringify(usr));
+                    window.location.href = '/dashboard';
+
+                    //this.props.navHook('/dashboard');
+                }, 500);
+
             }
             
             this.stopBtnProgress();

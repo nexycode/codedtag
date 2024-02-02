@@ -14,16 +14,19 @@ import {BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './incs/header';
 import Footer from './incs/footer';  
 
+import AdminHeader from './incs/admin-header';
+import AdminFooter from './incs/admin-footer';
+
 import AnimatedSidebar from './incs/animated-sidebar'
 
 import {ContextApiKeys} from './utils/api-keys';
-import {AuthProvider} from './utils/auth.js';
+import {AuthProvider, SecurityProvider} from './utils/auth.js';
 
 // Components 
 import {Register} from './components/register'; 
 import {ForgetPassword} from './components/forget-password';
 import {Home} from './components/home';
-
+import {NotFound} from './components/not-found';
 // No Distruct
 import ChangePassword from './components/change-password';
 import ActivitingAccount from './components/activating-account';  
@@ -46,8 +49,21 @@ let Components = () => {
                               
                                           <Header />
                                           <AnimatedSidebar />
-                                                      
+                                                
+                                                
+                                                
                                                 <Routes>
+
+
+                                                      
+                                                           
+                                          
+                                                      <Route path="/dashboard" element={<SecurityProvider><AdminHeader /> <Dashboard /><AdminFooter /></SecurityProvider>} />
+                                                          
+                                                           
+                                                      
+
+                                                
 
                                                       <Route path="/" element={<Home />} />
                                                       <Route path="/signup" element={<Register />} />
@@ -55,10 +71,11 @@ let Components = () => {
                                                       <Route path="/forget-password" element={<ForgetPassword />} />
                                                       <Route path="/change-password/:code" element={<ChangePassword/>} />
                                                       <Route path="/activating-account/:code" element={<ActivitingAccount/>} />
-                                                
-                                                      <Route path="/dashboard" element={<Dashboard />} />
-                                                      
+                                                      <Route path="*" element={<NotFound/>} />
+
                                                 </Routes>
+
+                                                
 
                                           <Footer />
 
