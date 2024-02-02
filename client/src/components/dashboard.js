@@ -1,7 +1,7 @@
 //https://www.npmjs.com/package/react-script-tag
 
 import { Component } from "react"; 
-import Icons from './../options/icons';
+
 
 import './../assets/css/admin.min.css'
 
@@ -16,38 +16,10 @@ class Dashboard extends Component {
          
        
         return (
-            <>
-                <header className="wrapper white-bg border-bottom plr-0">
-                    <nav className="flexbox items-center offset-left offset-right plr-15 max-1150">
-                        
-                        <ul className="inline-list left-p-30 main-nav font-13 bold-list">
-                            <li>
-                                <a href='#' className="flexbox items-center">
-                                    <span className="flexbox items-center mr-5">
-                                        {Icons.view}
-                                    </span>
-                                    <span>
-                                        View Site
-                                    </span>
-                                </a>
-                            </li> 
-                        </ul>
-
-                        <ul className="inline-list left-p-30 main-nav font-13 bold-list offset-right">
-                            <li className="has-icon-only has-label">
-                                <a href="#">
-                                    <span className="flexbox items-center">
-                                        {Icons.notification}
-                                    </span>
-                                    <span className="flexbox items-center content-center">10</span>
-                                </a>
-                            </li>                             
-                        </ul>
-
-                        
-
-                    </nav>
-                </header>
+            <> 
+                <div>
+                    Hello World
+                </div>
             </>
         );
 

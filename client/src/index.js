@@ -12,13 +12,12 @@ import {BrowserRouter, Routes, Route } from 'react-router-dom';
 
 // Tempalte Parts 
 import Header from './incs/header';
-import Footer from './incs/footer';
-import {AdminHeader} from './incs/admin-header';
-import {AdminFooter} from './incs/admin-footer';
+import Footer from './incs/footer';  
 
 import AnimatedSidebar from './incs/animated-sidebar'
 
 import {ContextApiKeys} from './utils/api-keys';
+import {AuthProvider} from './utils/auth.js';
 
 // Components 
 import {Register} from './components/register'; 
@@ -36,40 +35,35 @@ import {Dashboard } from './components/dashboard';
 
 
 let Components = () => {
-      
-      var admin = [
-            "/dashboard",
-            "/menu"
-      ];
-      
-      var [setScreen, screen ] = useState('');
-
-      var setScreen = admin.existsPath(window.location.pathname);
-
+       
+        
       return (
             <>
                   <React.StrictMode>
                         <ContextApiKeys>
-                              <BrowserRouter>
+                              <AuthProvider>
+                                    <BrowserRouter>
+                              
+                                          <Header />
+                                          <AnimatedSidebar />
+                                                      
+                                                <Routes>
 
-                                    {screen ? null: <Header />} 
-                                    {/*screen ? <AdminHeader /> : null */} 
-                                    {screen ? null: <AnimatedSidebar />} 
-                                          <Routes>
-                                                <Route path="/signup" element={<Register />} />
-                                                <Route path="/login" element={<Login />} />
-                                                <Route path="/forget-password" element={<ForgetPassword />} />
-                                                <Route path="/change-password/:code" element={<ChangePassword/>} />
-                                                <Route path="/activating-account/:code" element={<ActivitingAccount/>} />
-                                          </Routes>
+                                                      <Route path="/" element={<Home />} />
+                                                      <Route path="/signup" element={<Register />} />
+                                                      <Route path="/login" element={<Login />} />
+                                                      <Route path="/forget-password" element={<ForgetPassword />} />
+                                                      <Route path="/change-password/:code" element={<ChangePassword/>} />
+                                                      <Route path="/activating-account/:code" element={<ActivitingAccount/>} />
+                                                
+                                                      <Route path="/dashboard" element={<Dashboard />} />
+                                                      
+                                                </Routes>
 
-                                          <Routes>
-                                                <Route path="/dashboard" element={<Dashboard />} />
-                                          </Routes>
+                                          <Footer />
 
-                                    {screen ? null: <Footer />} 
-                                    {/* {screen ? <AdminFooter /> : null */ }  
-                              </BrowserRouter>                  
+                                    </BrowserRouter>  
+                              </AuthProvider>                
                         </ContextApiKeys>
                   </React.StrictMode>
             </>
